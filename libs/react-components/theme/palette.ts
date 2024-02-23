@@ -1,5 +1,10 @@
 export const white = '#FFFFFF';
 
+export const black = {
+  100: "#111",
+  200: "#000"
+}
+
 export const grey = {
   50: '#FAFAFA',
   100: '#F5F5F5',
@@ -55,6 +60,7 @@ export const yellow = {
 
 export default {
   white,
+  black,
   grey,
   primary,
   green,

@@ -185,17 +185,17 @@ const AuthLogin = ({
           formik.values.password.length &&
           passwordChecklistSettings ? (
             <Box
-              sx={{
-                border: 1,
-                marginTop: 1,
-                padding: 1.5,
-                borderRadius: 1,
-                borderColor: 'grey.400',
-                '& .checklist-icon': {
-                  marginTop: 0.5
-                },
-                fontSize: 14
-              }}
+              // sx={{
+              //   border: 1,
+              //   marginTop: 1,
+              //   padding: 1.5,
+              //   borderRadius: 1,
+              //   borderColor: 'grey.400',
+              //   '& .checklist-icon': {
+              //     marginTop: 0.5
+              //   },
+              //   fontSize: 14
+              // }}
             >
               Your password must contain:
               <PasswordChecklist
@@ -218,7 +218,7 @@ const AuthLogin = ({
             type="submit"
             disabled={loading || (!showSignIn && !isPasswordValid)}
             variant="contained"
-            sx={{ marginTop: 3, width: '100%' }}
+            // sx={{ marginTop: 3, width: '100%' }}
           >
             Continue
           </Button>
@@ -247,20 +247,20 @@ const AuthLogin = ({
       {onPasswordSignIn && oAuthReady ? (
         <Typography
           color="text.primary"
-          sx={{
-            alignItems: 'center',
-            direction: 'row',
-            display: 'flex',
-            gap: 2,
-            marginTop: 1,
-            width: '100%',
-            ':before, :after': {
-              content: '""',
-              borderBottom: `1px solid ${grey[400]}`,
-              height: '0.5px',
-              flex: '1 0 auto'
-            }
-          }}
+          // sx={{
+          //   alignItems: 'center',
+          //   direction: 'row',
+          //   display: 'flex',
+          //   gap: 2,
+          //   marginTop: 1,
+          //   width: '100%',
+          //   ':before, :after': {
+          //     content: '""',
+          //     borderBottom: `1px solid ${grey[400]}`,
+          //     height: '0.5px',
+          //     flex: '1 0 auto'
+          //   }
+          // }}
         >
           OR
         </Typography>
