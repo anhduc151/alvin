@@ -10,6 +10,8 @@ import { Logo } from 'components/atoms/logo';
 import { useQuery } from 'hooks/query';
 
 import { apiClientState } from 'state/apiClient';
+import './login.css'
+import chatbot from '../assets/chatbot.png'
 
 export default function Login() {
   const query = useQuery();
@@ -23,7 +25,7 @@ export default function Login() {
     try {
       const json = await apiClient.headerAuth();
       setAccessToken(json.access_token);
-      navigate('/');
+      navigate('/message');
     } catch (error: any) {
       setError(error.message);
     }
@@ -32,7 +34,7 @@ export default function Login() {
   const handlePasswordLogin = async (
     email: string,
     password: string,
-    callbackUrl: string
+    // callbackUrl: string
   ) => {
     const formData = new FormData();
     formData.append('username', email);
@@ -41,7 +43,8 @@ export default function Login() {
     try {
       const json = await apiClient.passwordAuth(formData);
       setAccessToken(json.access_token);
-      navigate(callbackUrl);
+      // navigate(callbackUrl);
+      navigate("/message");
     } catch (error: any) {
       setError(error.message);
     }
@@ -55,20 +58,31 @@ export default function Login() {
     if (!config) {
       return;
     }
+    
+    if (user) {
+      navigate('/message'); 
+      return;
+    }
     if (!config.requireLogin) {
       navigate('/');
     }
     if (config.headerAuth) {
       handleHeaderAuth();
     }
-    if (user) {
-      navigate('/');
-    }
+    // if (user) {
+    //   navigate('/message');
+    // }
   }, [config, user]);
 
   return (
-    <AuthLogin
-      title="Login to access the app."
+    <div className='login_form'>
+     {/* <div className="login_form_left">
+      <img src={chatbot} alt="" />
+     </div> */}
+
+     <div className="login_form_right">
+     <AuthLogin
+      title="Sign In"
       error={error}
       callbackUrl="/"
       providers={config?.oauthProviders || []}
@@ -76,7 +90,9 @@ export default function Login() {
       onOAuthSignIn={async (provider: string) => {
         window.location.href = apiClient.getOAuthEndpoint(provider);
       }}
-      renderLogo={<Logo style={{ maxWidth: '60%', maxHeight: '90px' }} />}
+      // renderLogo={<Logo style={{ maxWidth: '60%', maxHeight: '90px' }} />}
     />
+     </div>
+    </div>
   );
 }

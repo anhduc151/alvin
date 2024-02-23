@@ -78,7 +78,7 @@ const Nav = ({ dataPersistence, hasReadme, matches }: NavProps) => {
     anchorEl = ref.current;
   }
 
-  const tabs = [{ to: '/', label: t('components.organisms.header.chat') }];
+  const tabs = [{ to: '/message', label: t('components.organisms.header.chat') }];
 
   if (hasReadme) {
     tabs.push({
@@ -177,7 +177,7 @@ const Header = memo(
           >
             <NewChatButton />
             <Box ml={1} />
-            <GithubButton href={projectSettings?.ui?.github} />
+            <GithubButton />
             <UserButton />
           </Stack>
         </Toolbar>

@@ -27,7 +27,7 @@ export default function NewChatButton() {
 
   const handleConfirm = () => {
     clear();
-    navigate('/');
+    navigate('/message');
     handleClose();
   };
 
