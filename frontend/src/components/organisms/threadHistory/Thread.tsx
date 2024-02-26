@@ -124,12 +124,12 @@ const Thread = ({ thread, error, isLoading }: Props) => {
             id="thread-info"
             severity="info"
             action={
-              <Button component={Link} color="inherit" size="small" to="/">
+              <Button component={Link} color="inherit" size="small" to="/message">
                 <Translator path="components.organisms.threadHistory.Thread.backToChat" />
               </Button>
             }
           >
-            <Translator path="components.organisms.threadHistory.Thread.chatCreatedOn" />{' '}
+            <Translator path="components.organisms.threadHistory.Thread.chatCreatedOn" />
             {new Intl.DateTimeFormat(undefined, {
               day: 'numeric',
               month: 'numeric',

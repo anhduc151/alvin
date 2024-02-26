@@ -1,3 +1,37 @@
+/* css login */
+
+.login_name {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    position: absolute;
+    top: 2%;
+    left: 2%;
+  }
+  
+  .login_name_logo {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  .login_name_title {
+    font-size: 20px;
+    color: #fff;
+    font-weight: bold;
+  }
+  
+  .loginTitle {
+    color: blue;
+    font-size: 20px;
+  }
+  
+  .login {
+    background-color: #000 !important;
+  }
+
+
 .login_form {
     display: flex;
     /* justify-content: center; */

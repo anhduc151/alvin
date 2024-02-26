@@ -78,7 +78,7 @@ const Nav = ({ dataPersistence, hasReadme, matches }: NavProps) => {
     anchorEl = ref.current;
   }
 
-  const tabs = [{ to: '/message', label: t('components.organisms.header.chat') }];
+  const tabs = [{ to: '/message', label: t('components.organisms.header.chat') }, { to: '/payment', label: t('payment')}];
 
   if (hasReadme) {
     tabs.push({
@@ -161,7 +161,7 @@ const Header = memo(
           }}
         >
           <Stack alignItems="center" direction={'row'} gap={!matches ? 3 : 0}>
-            {!matches ? <Logo style={{ maxHeight: '25px' }} /> : null}
+            {!matches ? <Logo style={{ maxHeight: '35px', borderRadius: "50%", border: "2px solid #292929" }} /> : null}
             <Nav
               matches={matches}
               dataPersistence={projectSettings?.dataPersistence}

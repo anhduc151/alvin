@@ -8,6 +8,7 @@ import Readme from 'pages/Readme';
 import Thread from 'pages/Thread';
 import Message from 'pages/Message';
 import Home from 'pages/Home';
+import Payment from 'pages/Payment';
 
 export const router = createBrowserRouter([
   {
@@ -33,6 +34,10 @@ export const router = createBrowserRouter([
   {
     path: '/element/:id',
     element: <Element />
+  },
+  {
+    path: '/payment',
+    element: <Payment />
   },
   {
     path: '/login',

@@ -1,7 +1,7 @@
+import React, { useState } from 'react';
 import { useAuth } from 'api/auth';
 import { Link } from 'react-router-dom';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
-
 import KeyIcon from '@mui/icons-material/Key';
 import LogoutIcon from '@mui/icons-material/Logout';
 import SettingsIcon from '@mui/icons-material/Settings';
@@ -12,13 +12,15 @@ import {
   ListItemText,
   Menu,
   MenuItem,
-  Typography
+  Typography,
+  Modal,
+  Box,
+  Avatar
 } from '@mui/material';
-
 import { Translator } from 'components/i18n';
-
 import { projectSettingsState } from 'state/project';
 import { settingsState } from 'state/settings';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 interface Props {
   anchorEl: null | HTMLElement;
@@ -26,21 +28,49 @@ interface Props {
   handleClose: () => void;
 }
 
+const styleUser = {
+  position: 'absolute' as 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  height: 600,
+  width: 600,
+  bgcolor: 'background.paper',
+  color: 'text.primary', 
+  border: "1px solid #2b2a2a",
+  boxShadow: 24,
+  borderRadius: 2,
+  p: 4,
+};
+
 export default function UserMenu({ anchorEl, open, handleClose }: Props) {
   const { user, logout } = useAuth();
   const pSettings = useRecoilValue(projectSettingsState);
   const setAppSettings = useSetRecoilState(settingsState);
   const requiredKeys = !!pSettings?.userEnv?.length;
 
+  const [isUserModalOpen, setIsUserModalOpen] = useState(false);
+
+  const openUserModal = () => setIsUserModalOpen(true);
+  const closeUserModal = () => setIsUserModalOpen(false);
+
   const userNameItem = user && (
-    <ListItem key="user-name" sx={{ display: 'flex', flexDirection: 'column' }}>
-      <Typography width="100%" fontSize="14px" fontWeight={700}>
-        {user.id}
+    <MenuItem key="user-name" onClick={openUserModal}>
+      <ListItemIcon>
+        <AccountCircleIcon />
+      </ListItemIcon>
+      {/* <ListItemText>
+        <Typography width="100%" fontSize="14px" fontWeight={700}>
+          {user.id}
+        </Typography>
+        <Typography width="100%" fontSize="13px" fontWeight={400}>
+          {user.identifier}
+        </Typography>
+      </ListItemText> */}
+      <Typography>
+        Account
       </Typography>
-      <Typography width="100%" fontSize="13px" fontWeight={400}>
-        {user.identifier}
-      </Typography>
-    </ListItem>
+    </MenuItem>
   );
 
   const settingsItem = (
@@ -102,46 +132,72 @@ export default function UserMenu({ anchorEl, open, handleClose }: Props) {
   }, [] as React.ReactNode[]);
 
   return (
-    <Menu
-      anchorEl={anchorEl}
-      id="account-menu"
-      open={open}
-      onClose={handleClose}
-      PaperProps={{
-        sx: {
-          width: 220,
-          overflow: 'visible',
-          mt: 1.5,
-          backgroundImage: 'none',
-          border: (theme) => `1px solid ${theme.palette.divider}`,
-          boxShadow: (theme) =>
-            theme.palette.mode === 'light'
-              ? '0px 2px 4px 0px #0000000D'
-              : '0px 10px 10px 0px #0000000D',
-          '& .MuiAvatar-root': {
-            width: 32,
-            height: 32,
-            ml: -0.5,
-            mr: 1
-          },
-          '&:before': {
-            content: '""',
-            display: 'block',
-            position: 'absolute',
-            top: 0,
-            right: 14,
-            width: 10,
-            height: 10,
-            bgcolor: 'background.default',
-            transform: 'translateY(-50%) rotate(45deg)',
-            zIndex: 0
+    <>
+      <Menu
+        anchorEl={anchorEl}
+        id="account-menu"
+        open={open}
+        onClose={handleClose}
+        PaperProps={{
+          sx: {
+            width: 220,
+            overflow: 'visible',
+            mt: 1.5,
+            backgroundImage: 'none',
+            border: (theme) => `1px solid ${theme.palette.divider}`,
+            boxShadow: (theme) =>
+              theme.palette.mode === 'light'
+                ? '0px 2px 4px 0px #0000000D'
+                : '0px 10px 10px 0px #0000000D',
+            '& .MuiAvatar-root': {
+              width: 32,
+              height: 32,
+              ml: -0.5,
+              mr: 1
+            },
+            '&:before': {
+              content: '""',
+              display: 'block',
+              position: 'absolute',
+              top: 0,
+              right: 14,
+              width: 10,
+              height: 10,
+              bgcolor: 'background.default',
+              transform: 'translateY(-50%) rotate(45deg)',
+              zIndex: 0
+            }
           }
-        }
-      }}
-      transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-      anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-    >
-      {itemsWithDivider}
-    </Menu>
+        }}
+        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+      >
+        {itemsWithDivider}
+      </Menu>
+      <Modal
+      open={isUserModalOpen}
+      onClose={closeUserModal}
+      aria-labelledby="modal-title"
+      aria-describedby="modal-description"
+      >
+       <Box sx={styleUser}>
+
+       {user && (
+         <ListItemText>
+
+           <Typography>
+             {user.id}
+           </Typography>
+           
+           <Typography>
+             Email: {user.identifier}
+           </Typography>
+
+         </ListItemText>
+       )}
+
+       </Box>
+      </Modal>
+    </>
   );
 }

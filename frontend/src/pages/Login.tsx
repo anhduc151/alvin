@@ -1,17 +1,19 @@
 import { useAuth } from 'api/auth';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
 import { AuthLogin } from '@chainlit/react-components';
 
-import { Logo } from 'components/atoms/logo';
+// import { Logo } from 'components/atoms/logo';
 
 import { useQuery } from 'hooks/query';
 
 import { apiClientState } from 'state/apiClient';
 import './login.css'
-import chatbot from '../assets/chatbot.png'
+
+import { Box, Stack, Typography } from '@mui/material';
+import { Logo } from 'components/atoms/logo';
 
 export default function Login() {
   const query = useQuery();
@@ -75,12 +77,16 @@ export default function Login() {
   }, [config, user]);
 
   return (
-    <div className='login_form'>
-     {/* <div className="login_form_left">
-      <img src={chatbot} alt="" />
-     </div> */}
+    <Stack>
+      <Link to="/" className="login_name decoration">
+         <Logo style={{width: "55px", height: "55px", borderRadius: "50%", border: "1px solid #000"}}/>
 
-     <div className="login_form_right">
+         <Typography sx={{ color: "text.primary", fontWeight: "700", fontSize: "20px"}}>
+           Alvin AI
+         </Typography>
+      </Link>
+      
+     <Box sx={{borderRadius: "22px"}}>
      <AuthLogin
       title="Sign In"
       error={error}
@@ -90,9 +96,9 @@ export default function Login() {
       onOAuthSignIn={async (provider: string) => {
         window.location.href = apiClient.getOAuthEndpoint(provider);
       }}
-      // renderLogo={<Logo style={{ maxWidth: '60%', maxHeight: '90px' }} />}
+      renderLogo={<Logo style={{ maxWidth: '60%', maxHeight: '90px', borderRadius: "50%" }} />}
     />
-     </div>
-    </div>
+    </Box>
+    </Stack>
   );
 }

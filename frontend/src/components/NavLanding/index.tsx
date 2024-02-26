@@ -79,7 +79,7 @@ const NavLanDing: React.FC = () => {
           </li>
         </Link>
 
-        <Link to="/post-crypto" className="decoration">
+        {/* <Link to="/post-crypto" className="decoration">
           <li
             className={`navlanding_li ${
               activePage === "/post-crypto" ? "landingactive" : ""
@@ -87,7 +87,7 @@ const NavLanDing: React.FC = () => {
           >
             Hot Posts Crypto
           </li>
-        </Link>
+        </Link> */}
 
         {/* <Link to="/blogs" className="decoration">
           <li

@@ -1,6 +1,7 @@
 /* css home  */
 .home {
   height: 100%;
+  background-color: #000;
 }
 /* css animation home */
 .circle {
@@ -426,6 +427,7 @@
 .home_main {
   padding: 5.6rem 2.4rem 0;
   display: flex;
+  background-color: #000;
   flex-direction: column;
   align-items: center;
   flex: 1;
@@ -466,6 +468,10 @@
   animation-delay: 6.65s;
 }
 
+.home_develop {
+  background-color: #000;
+}
+
 .home_developer_btn_get {
   padding: 20px 30px;
   border: 1px solid #49c93d;
@@ -493,6 +499,10 @@
 /* end home_developer  */
 
 /* css section */
+#develop, #preview, #ship {
+  background-color: #000;
+}
+
 #develop h6,
 #start h6,
 #preview h6,
@@ -539,7 +549,7 @@
 
 #develop {
   width: 100%;
-  margin-top: 50px;
+  padding-top: 50px;
   text-align: center;
 }
 
@@ -575,6 +585,7 @@
 
 .home_title_names {
   text-align: center;
+  background-color: #000;
   padding: 22px 0;
   font-size: 55px;
 }
@@ -616,7 +627,7 @@
 /* css preview */
 #preview {
   width: 100%;
-  margin-top: 50px;
+  padding-top: 50px;
   text-align: center;
 }
 
@@ -653,6 +664,7 @@
 /* css home preview */
 .home_preview {
   padding: 0 10%;
+  background-color: #000;
 }
 
 .home_preview_p {
@@ -664,7 +676,7 @@
   display: flex;
   gap: 20px;
   justify-content: center;
-  margin-bottom: 40px;
+  padding-bottom: 40px;
   align-items: center;
 }
 
@@ -687,7 +699,7 @@
 /* css ship */
 #ship {
   width: 100%;
-  margin-top: 50px;
+  padding-top: 50px;
   text-align: center;
 }
 
@@ -724,6 +736,7 @@
 /* css home_ship */
 .home_ship {
   padding: 0 10%;
+  background-color: #000;
   position: relative;
 }
 

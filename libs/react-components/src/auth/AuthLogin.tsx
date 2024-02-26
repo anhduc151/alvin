@@ -2,7 +2,7 @@ import { useFormik } from 'formik';
 import { useEffect, useState } from 'react';
 import PasswordChecklist, { RuleNames } from 'react-password-checklist';
 import { TextInput } from 'src/inputs/TextInput';
-import { grey } from 'theme/palette';
+// import { grey } from 'theme/palette';
 import { useToggle } from 'usehooks-ts';
 import * as yup from 'yup';
 
@@ -185,17 +185,17 @@ const AuthLogin = ({
           formik.values.password.length &&
           passwordChecklistSettings ? (
             <Box
-              // sx={{
-              //   border: 1,
-              //   marginTop: 1,
-              //   padding: 1.5,
-              //   borderRadius: 1,
-              //   borderColor: 'grey.400',
-              //   '& .checklist-icon': {
-              //     marginTop: 0.5
-              //   },
-              //   fontSize: 14
-              // }}
+              sx={{
+                border: 1,
+                marginTop: 1,
+                padding: 1.5,
+                borderRadius: 1,
+                borderColor: 'grey.400',
+                '& .checklist-icon': {
+                  marginTop: 0.5
+                },
+                fontSize: 14
+              }}
             >
               Your password must contain:
               <PasswordChecklist
@@ -218,7 +218,7 @@ const AuthLogin = ({
             type="submit"
             disabled={loading || (!showSignIn && !isPasswordValid)}
             variant="contained"
-            // sx={{ marginTop: 3, width: '100%' }}
+            sx={{ marginTop: 3, width: '100%' }}
           >
             Continue
           </Button>
