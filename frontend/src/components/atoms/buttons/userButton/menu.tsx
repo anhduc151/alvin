@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { useAuth } from 'api/auth';
-import { Link } from 'react-router-dom';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
-import KeyIcon from '@mui/icons-material/Key';
-import LogoutIcon from '@mui/icons-material/Logout';
-import SettingsIcon from '@mui/icons-material/Settings';
+import React, { useState } from "react";
+import { useAuth } from "api/auth";
+import { Link } from "react-router-dom";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import KeyIcon from "@mui/icons-material/Key";
+import LogoutIcon from "@mui/icons-material/Logout";
+import SettingsIcon from "@mui/icons-material/Settings";
 import {
   Divider,
   ListItem,
@@ -15,12 +15,14 @@ import {
   Typography,
   Modal,
   Box,
-  Avatar
-} from '@mui/material';
-import { Translator } from 'components/i18n';
-import { projectSettingsState } from 'state/project';
-import { settingsState } from 'state/settings';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+  Avatar,
+} from "@mui/material";
+import { Translator } from "components/i18n";
+import { projectSettingsState } from "state/project";
+import { settingsState } from "state/settings";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import cover from "../../../../assets/cover_images.png";
+import UserIcon from "assets/user";
 
 interface Props {
   anchorEl: null | HTMLElement;
@@ -29,18 +31,19 @@ interface Props {
 }
 
 const styleUser = {
-  position: 'absolute' as 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
+  position: "absolute" as "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
   height: 600,
   width: 600,
-  bgcolor: 'background.paper',
-  color: 'text.primary', 
+  bgcolor: "background.paper",
+  color: "text.primary",
   border: "1px solid #2b2a2a",
   boxShadow: 24,
   borderRadius: 2,
-  p: 4,
+  padding: "0 20px 0",
+  overflow: "auto",
 };
 
 export default function UserMenu({ anchorEl, open, handleClose }: Props) {
@@ -67,9 +70,7 @@ export default function UserMenu({ anchorEl, open, handleClose }: Props) {
           {user.identifier}
         </Typography>
       </ListItemText> */}
-      <Typography>
-        Account
-      </Typography>
+      <Typography>Account</Typography>
     </MenuItem>
   );
 
@@ -121,7 +122,7 @@ export default function UserMenu({ anchorEl, open, handleClose }: Props) {
     userNameItem,
     settingsItem,
     apiKeysItem,
-    logoutItem
+    logoutItem,
   ].filter((i) => !!i);
 
   const itemsWithDivider = menuItems.reduce((acc, curr, i) => {
@@ -141,62 +142,83 @@ export default function UserMenu({ anchorEl, open, handleClose }: Props) {
         PaperProps={{
           sx: {
             width: 220,
-            overflow: 'visible',
+            overflow: "visible",
             mt: 1.5,
-            backgroundImage: 'none',
+            backgroundImage: "none",
             border: (theme) => `1px solid ${theme.palette.divider}`,
             boxShadow: (theme) =>
-              theme.palette.mode === 'light'
-                ? '0px 2px 4px 0px #0000000D'
-                : '0px 10px 10px 0px #0000000D',
-            '& .MuiAvatar-root': {
+              theme.palette.mode === "light"
+                ? "0px 2px 4px 0px #0000000D"
+                : "0px 10px 10px 0px #0000000D",
+            "& .MuiAvatar-root": {
               width: 32,
               height: 32,
               ml: -0.5,
-              mr: 1
+              mr: 1,
             },
-            '&:before': {
+            "&:before": {
               content: '""',
-              display: 'block',
-              position: 'absolute',
+              display: "block",
+              position: "absolute",
               top: 0,
               right: 14,
               width: 10,
               height: 10,
-              bgcolor: 'background.default',
-              transform: 'translateY(-50%) rotate(45deg)',
-              zIndex: 0
-            }
-          }
+              bgcolor: "background.default",
+              transform: "translateY(-50%) rotate(45deg)",
+              zIndex: 0,
+            },
+          },
         }}
-        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+        transformOrigin={{ horizontal: "right", vertical: "top" }}
+        anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
         {itemsWithDivider}
       </Menu>
       <Modal
-      open={isUserModalOpen}
-      onClose={closeUserModal}
-      aria-labelledby="modal-title"
-      aria-describedby="modal-description"
+        open={isUserModalOpen}
+        onClose={closeUserModal}
+        aria-labelledby="modal-title"
+        aria-describedby="modal-description"
       >
-       <Box sx={styleUser}>
+        <Box sx={styleUser}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <img
+              src={cover}
+              alt=""
+              style={{ width: "100%", height: "200px", objectFit: "cover" }}
+            />
+            <Avatar
+              sx={{
+                width: 72,
+                height: 72,
+                bgcolor: "primary.main",
+                color: "primary.contrastText",
+                position: "relative",
+                top: -20,
+              }}
+            >
+              <UserIcon sx={{ width: 20 }} />
+            </Avatar>
+          </Box>
 
-       {user && (
-         <ListItemText>
+          {user && (
+            <ListItemText>
+              <Typography>{user.id}</Typography>
 
-           <Typography>
-             {user.id}
-           </Typography>
-           
-           <Typography>
-             Email: {user.identifier}
-           </Typography>
-
-         </ListItemText>
-       )}
-
-       </Box>
+              <Typography sx={{ textAlign: "center" }}>
+                {user.identifier}
+              </Typography>
+            </ListItemText>
+          )}
+        </Box>
       </Modal>
     </>
   );

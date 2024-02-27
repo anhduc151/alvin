@@ -1,43 +1,37 @@
-import { Stack, Typography } from "@mui/material";
-import { Logo } from "components/atoms/logo";
+import { Box, Typography } from "@mui/material";
 import Page from "pages/Page";
 import React from "react";
 import { Active } from "./Active";
 import { History} from "./History";
+import { Usesage } from "./Usage";
 
 const Payment: React.FC = () => {
   
   return (
     <Page>
-      <Stack sx={{ with: "100%", padding: "30px 5%", color: "text.primary", overflow: "auto"}}>
-        {/* <Typography
-          sx={{
-            fontWeight: "700",
-            paddingBottom: "20px",
-            fontSize: "20px",
-            display: "flex",
-            alignItems: "center",
-            gap: "10px",
-          }}
-        >
-          <Logo
-            style={{ width: "30px", height: "30px", borderRadius: "50%" }}
-          />
-          Alvin AI
-        </Typography> */}
+      <Box sx={{ width: "100%", padding: "30px", color: "text.primary", overflow: "auto", display: "flex", gap: "20px", alignItem: "center"}}>
+        <Box>
+          <Typography sx={{ fontWeight: "700", paddingBottom: "12px" }}>
+            Active Subscription
+          </Typography>
 
-        <Typography sx={{ fontWeight: "700", paddingBottom: "12px" }}>
-          Active Supscription
-        </Typography>
+          <Active />
 
-        <Active />
+          <Typography sx={{ fontWeight: "700", paddingBottom: "12px" }}>
+            Payment History
+          </Typography>
 
-        <Typography sx={{ fontWeight: "700", paddingBottom: "12px" }}>
-          Payment History
-        </Typography>
+          <History />
+        </Box>
 
-        <History />
-      </Stack>
+        <Box>
+          <Typography sx={{ fontWeight: "700", paddingBottom: "12px" }}>
+             Usage Limit
+          </Typography>
+
+          <Usesage />
+        </Box>
+      </Box>
     </Page>
   );
 };

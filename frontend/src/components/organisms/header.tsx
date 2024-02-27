@@ -78,7 +78,7 @@ const Nav = ({ dataPersistence, hasReadme, matches }: NavProps) => {
     anchorEl = ref.current;
   }
 
-  const tabs = [{ to: '/message', label: t('components.organisms.header.chat') }, { to: '/payment', label: t('payment')}];
+  const tabs = [{ to: '/message', label: t('components.organisms.header.chat') }, { to: '/payment', label: t('Payment')}];
 
   if (hasReadme) {
     tabs.push({

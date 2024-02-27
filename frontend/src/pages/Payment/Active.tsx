@@ -69,14 +69,14 @@ const Active:React.FC = () => {
                   borderRadius: "20px",
                 }}
               >
-                Renews
+                Renew Plan
               </Button>
             </Box>
           </Box>
 
           <Box sx={{display: "flex", flexDirection: "column", gap: "10px", paddingTop: "10px", borderTop: "1px solid #383838"}}>
-            <Typography sx={{fontWeight: "500"}}>
-              Renews: <span style={{fontWeight: "400"}}>8 September 2023</span>
+            <Typography sx={{fontWeight: "500", color: "red"}}>
+              Expire: <span style={{fontWeight: "400"}}>8 September 2023</span>
             </Typography>
 
             <Typography sx={{fontWeight: "500"}}>

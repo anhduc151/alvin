@@ -32,14 +32,15 @@ export default function SettingsModal() {
       id="settings-dialog"
       PaperProps={{
         sx: {
-          backgroundImage: 'none'
+          backgroundImage: 'none',
+          border: "1px solid #383838",
         }
       }}
     >
       <DialogContent>
         <List
           sx={{ width: '100%', maxWidth: 360 }}
-          subheader={<ListSubheader>Settings</ListSubheader>}
+          subheader={<ListSubheader></ListSubheader>} //title settings
         >
           <ListItem sx={{ display: 'flex', gap: 2 }}>
             <ListItemIcon>
