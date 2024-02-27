@@ -79,9 +79,9 @@ export default function Login() {
   return (
     <Stack>
       <Link to="/" className="login_name decoration">
-         <Logo style={{width: "55px", height: "55px", borderRadius: "50%", border: "1px solid #000"}}/>
+         <Logo style={{width: "30px", height: "30px", borderRadius: "50%", border: "1px solid #000"}}/>
 
-         <Typography sx={{ color: "text.primary", fontWeight: "700", fontSize: "20px"}}>
+         <Typography sx={{ color: "text.primary", fontWeight: "700", fontSize: "17px"}}>
            Alvin AI
          </Typography>
       </Link>

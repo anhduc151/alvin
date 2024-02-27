@@ -9,6 +9,7 @@ import Thread from 'pages/Thread';
 import Message from 'pages/Message';
 import Home from 'pages/Home';
 import Payment from 'pages/Payment';
+import NotFound from 'pages/NotFound';
 
 export const router = createBrowserRouter([
   {
@@ -48,7 +49,11 @@ export const router = createBrowserRouter([
     element: <AuthCallback />
   },
   {
+    path: '/404',
+    element: <NotFound />
+  },
+  {
     path: '*',
-    element: <Navigate replace to="/" />
+    element: <Navigate replace to="/404" />
   }
 ]);

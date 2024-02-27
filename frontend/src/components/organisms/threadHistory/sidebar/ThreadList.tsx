@@ -89,7 +89,7 @@ const ThreadList = ({
       clear();
     }
     if (threadId === threadHistory.currentThreadId) {
-      navigate('/');
+      navigate('/message');
     }
     fetchThreads();
   };
