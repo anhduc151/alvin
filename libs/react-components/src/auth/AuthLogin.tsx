@@ -70,6 +70,7 @@ type AuthLoginProps = {
     minLength?: number;
     maxLength?: number;
   };
+  renderElementBottom?: React.ReactNode;
 };
 
 const AuthLogin = ({
@@ -82,7 +83,8 @@ const AuthLogin = ({
   onForgotPassword,
   onSignUp,
   renderLogo,
-  passwordChecklistSettings
+  passwordChecklistSettings,
+  renderElementBottom
 }: AuthLoginProps) => {
   const [loading, setLoading] = useState(false);
   const [isPasswordValid, setIsPasswordValid] = useState(
@@ -134,7 +136,7 @@ const AuthLogin = ({
   });
 
   return (
-    <AuthTemplate title={title} renderLogo={renderLogo}>
+    <AuthTemplate title={title} renderLogo={renderLogo} renderElementBottom={renderElementBottom}>
       {errorState ? (
         <Alert sx={{ my: 1 }} severity="error">
           {getErrorMessage(errorState)}
@@ -143,18 +145,7 @@ const AuthLogin = ({
 
       {onPasswordSignIn ? (
         <form onSubmit={formik.handleSubmit}>
-          <TextInput
-            id="email"
-            placeholder="Email address"
-            size="medium"
-            value={formik.values.email}
-            hasError={!!formik.errors.email}
-            description={formik.touched.email ? formik.errors.email : undefined}
-            onBlur={formik.handleBlur}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              formik.setFieldValue('email', e.target.value)
-            }
-          />
+          
           <TextInput
             id="password"
             placeholder="Password"
@@ -178,7 +169,7 @@ const AuthLogin = ({
                   {showPassword ? <VisibilityOff /> : <Visibility />}
                 </IconButton>
               </InputAdornment>
-            }
+            }     
           />
 
           {!showSignIn &&
@@ -222,6 +213,7 @@ const AuthLogin = ({
           >
             Continue
           </Button>
+          <>{renderElementBottom}</>
         </form>
       ) : null}
 
@@ -277,6 +269,7 @@ const AuthLogin = ({
           ))}
         </Stack>
       ) : null}
+      
     </AuthTemplate>
   );
 };

@@ -1,87 +1,90 @@
-// import { useState } from 'react';
-// import { useRecoilValue } from 'recoil';
-// import { toast } from 'sonner';
+import { useState } from "react";
+import { useRecoilValue } from "recoil";
+import { toast } from "sonner";
+import EditIcon from "@mui/icons-material/Edit";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import LoadingButton from "@mui/lab/LoadingButton";
+import { IconButton, Input } from "@mui/material";
+import { ClientError, IThread, accessTokenState } from "@chainlit/react-client";
+import { apiClientState } from "state/apiClient";
 
-// import { IconButton } from '@mui/material';
-// import { LoadingButton } from '@mui/lab';
-// import Dialog from '@mui/material/Dialog';
-// import DialogActions from '@mui/material/DialogActions';
-// import DialogContent from '@mui/material/DialogContent';
-// import DialogContentText from '@mui/material/DialogContentText';
-// import DialogTitle from '@mui/material/DialogTitle';
-// import EditIcon from '@mui/icons-material/Edit';
-// import Button from '@mui/material/Button';
+interface Props {
+  threadId: string;
+  threadData: IThread;
+  onEdit: () => void;
+}
 
-// import { ClientError, accessTokenState } from '@chainlit/react-client';
-// import { Translator } from 'components/i18n';
-// import { apiClientState } from 'state/apiClient';
+const EditThreadButton = ({ threadId, threadData, onEdit }: Props) => {
+  const [open, setOpen] = useState(false);
+  const [newThreadName, setNewThreadName] = useState<string>("");
+  const accessToken = useRecoilValue(accessTokenState);
+  const apiClient = useRecoilValue(apiClientState);
 
-// interface Props {
-//   threadId: string;
-//   onEdit: () => void;
-// }
+  const handleClickOpen = () => {
+    setOpen(true);
+    setNewThreadName(threadData.name || "");
+  };
 
-// const EditThreadButton = ({ threadId, onEdit }: Props) => {
-//   const [open, setOpen] = useState(false);
-//   const accessToken = useRecoilValue(accessTokenState);
-//   const apiClient = useRecoilValue(apiClientState);
+  const handleClose = () => {
+    setOpen(false);
+  };
 
-//   const handleClickOpen = () => {
-//     setOpen(true);
-//   };
+  const handleSave = async () => {
+    try {
+      const res = await apiClient.editThread(
+        threadId,
+        { ...threadData, name: newThreadName },
+        accessToken!
+      );
+      if(res){
+        toast.success("Thread updated successfully");
+        onEdit();
+      }
+    } catch (error) {
+      if (error instanceof ClientError) {
+        toast.error(error.message);
+      }
+    } finally {
+      handleClose();
+    }
+  };
 
-//   const handleClose = () => {
-//     setOpen(false);
-//   };
+  return (
+    <>
+      <IconButton size="small" onClick={handleClickOpen} sx={{ p: "2px" }}>
+        <EditIcon />
+      </IconButton>
 
-//   const handleConfirm = async () => {
-//     try {
-//       const result = await apiClient.editThread(threadId, threadData, accessToken);
-//       await toast.promise(Promise.resolve(result), {
-//         loading: (
-//           <Translator path="components.organisms.threadHistory.sidebar.EditThreadButton.saving" />
-//         ),
-//         success: () => {
-//           onEdit(); // Gọi hàm onEdit để thực hiện hành động cần thiết
-//           return <Translator path="components.organisms.threadHistory.sidebar.EditThreadButton.threadEdited" />;
-//         },
-//         error: (err) => {
-//           if (err instanceof ClientError) {
-//             return <span>{err.message}</span>;
-//           } else {
-//             return <span></span>;
-//           }
-//         }
-//       });
-//     } catch (error) {
-//     }
-//     handleClose();
-//   };
-  
-  
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>Edit Thread</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            <Input
+              type="text"
+              value={newThreadName}
+              onChange={(e) => setNewThreadName(e.target.value)}
+            />
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Cancel</Button>
+          <LoadingButton
+            onClick={handleSave}
+            loadingPosition="end"
+            variant="contained"
+            color="primary"
+          >
+            Save
+          </LoadingButton>
+        </DialogActions>
+      </Dialog>
+    </>
+  );
+};
 
-//   return (
-//     <>
-//       <IconButton size="small" onClick={handleClickOpen} sx={{ p: '2px' }}>
-//         <EditIcon />
-//       </IconButton>
-//       <Dialog open={open} onClose={handleClose}>
-//         <DialogTitle><Translator path="components.organisms.threadHistory.sidebar.EditThreadButton.editThread" /></DialogTitle>
-//         <DialogContent>
-//           {/* Your form fields for editing thread */}
-//           <DialogContentText>
-//             {/* Your form fields for editing thread */}
-//           </DialogContentText>
-//         </DialogContent>
-//         <DialogActions>
-//           <Button onClick={handleClose} color="secondary"><Translator path="components.organisms.threadHistory.sidebar.EditThreadButton.cancel" /></Button>
-//           <LoadingButton onClick={handleConfirm} loadingIndicator={<Translator path="components.organisms.threadHistory.sidebar.EditThreadButton.saving" />} loadingPosition="end" variant="contained" color="primary">
-//             <Translator path="components.organisms.threadHistory.sidebar.EditThreadButton.save" />
-//           </LoadingButton>
-//         </DialogActions>
-//       </Dialog>
-//     </>
-//   );
-// };
-
-// export default EditThreadButton;
+export default EditThreadButton;

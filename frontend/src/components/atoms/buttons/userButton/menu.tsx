@@ -212,7 +212,6 @@ export default function UserMenu({ anchorEl, open, handleClose }: Props) {
           {user && (
             <ListItemText>
               <Typography>{user.id}</Typography>
-
               <Typography sx={{ textAlign: "center" }}>
                 {user.identifier}
               </Typography>
