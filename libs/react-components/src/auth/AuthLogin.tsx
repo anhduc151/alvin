@@ -147,6 +147,18 @@ const AuthLogin = ({
         <form onSubmit={formik.handleSubmit}>
           
           <TextInput
+            id="email"
+            placeholder="Email address"
+            size="medium"
+            value={formik.values.email}
+            hasError={!!formik.errors.email}
+            description={formik.touched.email ? formik.errors.email : undefined}
+            onBlur={formik.handleBlur}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              formik.setFieldValue('email', e.target.value)
+            }
+          />
+          <TextInput
             id="password"
             placeholder="Password"
             value={formik.values.password}
@@ -169,7 +181,7 @@ const AuthLogin = ({
                   {showPassword ? <VisibilityOff /> : <Visibility />}
                 </IconButton>
               </InputAdornment>
-            }     
+            }
           />
 
           {!showSignIn &&
