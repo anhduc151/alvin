@@ -237,14 +237,14 @@ export class ChainlitAPI extends APIBase {
     return res.json();
   }
 
-  async editThread(
-    threadId: string,
-    threadData: { name: string, tags: string[] },
-    accessToken?: string
-    ): Promise<IThread> {
-    const res = await this.put(`/project/thread/${threadId}`, threadData, accessToken);
-    return res.json();
-  }
+  // async editThread(
+  //   threadId: string,
+  //   threadData: { name: string, tags: string[] },
+  //   accessToken?: string
+  //   ): Promise<IThread> {
+  //   const res = await this.put(`/project/thread/${threadId}`, threadData, accessToken);
+  //   return res.json();
+  // }
 
   uploadFile(
     file: File,

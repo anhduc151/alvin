@@ -17,7 +17,6 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 
 import { RegularButton } from '@chainlit/react-components';
 
-import GithubButton from 'components/atoms/buttons/githubButton';
 import UserButton from 'components/atoms/buttons/userButton';
 import { Logo } from 'components/atoms/logo';
 import NewChatButton from 'components/molecules/newChatButton';
@@ -177,7 +176,6 @@ const Header = memo(
           >
             <NewChatButton />
             <Box ml={1} />
-            <GithubButton />
             <UserButton />
           </Stack>
         </Toolbar>

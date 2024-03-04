@@ -21,13 +21,15 @@ interface Props {
 
 const EditThreadButton = ({ threadId, threadData, onEdit }: Props) => {
   const [open, setOpen] = useState(false);
-  const [newThreadName, setNewThreadName] = useState<string>("");
+  const [newThreadName, setNewThreadName] = useState<string>(threadData.name || "");
   const accessToken = useRecoilValue(accessTokenState);
-  const apiClient = useRecoilValue(apiClientState);
+
+  console.log(accessToken);
+  console.log(threadId)
+  
 
   const handleClickOpen = () => {
     setOpen(true);
-    setNewThreadName(threadData.name || "");
   };
 
   const handleClose = () => {
@@ -36,23 +38,35 @@ const EditThreadButton = ({ threadId, threadData, onEdit }: Props) => {
 
   const handleSave = async () => {
     try {
-      const res = await apiClient.editThread(
-        threadId,
-        { ...threadData, name: newThreadName },
-        accessToken!
-      );
-      if(res){
-        toast.success("Thread updated successfully");
-        onEdit();
+      const response = await fetch(`https://crypto-beat--alvin.modal.run/project/thread/${threadId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
+        },
+        body: JSON.stringify({
+          name: newThreadName,
+          tags: threadData.tags
+        })
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to update thread');
       }
+  
+      toast.success("Thread updated successfully");
+      onEdit();
     } catch (error) {
       if (error instanceof ClientError) {
         toast.error(error.message);
+      } else {
+        console.error('Error:', error);
       }
     } finally {
       handleClose();
     }
   };
+
 
   return (
     <>
