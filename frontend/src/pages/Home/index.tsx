@@ -8,10 +8,10 @@ import smart from "../../assets/SMART.png";
 import tch from "../../assets/TCH.png";
 import tnc from "../../assets/TNC.png";
 import xbc from "../../assets/XBC.png";
-import code from "../../assets/code_home.png";
-import preview1 from "../../assets/preview_ai1.png";
-import preview2 from "../../assets/preview_ai2.png";
-import { Link } from "react-router-dom";
+// import code from "../../assets/code_home.png";
+// import preview1 from "../../assets/preview_ai1.png";
+// import preview2 from "../../assets/preview_ai2.png";
+// import { Link } from "react-router-dom";
 import NavLanDing from "components/NavLanding";
 import Global from "components/Global";
 import FootLanDing from "components/FootLanDing";
@@ -29,12 +29,11 @@ const Home: React.FC = () => {
       <div className="home_circle">
         <div className="home_title">
           <h1 className="home_title_h1">
-            Earn tokens by using crypto applications
+          Discover Hidden 100x Cryptocurrencies with Alvin AI The best AI-driven crypto research application.
           </h1>
 
           <p className="home_title_p">
-            Alvin AI makes it easy to earn crypto by participating in the best
-            cryptonetworks Get Started
+          Harness the power of artificial intelligence to unlock new investment opportunities. Gain an edge in the crypto market and make informed decisions for maximized potential.
           </p>
         </div>
 
@@ -51,7 +50,7 @@ const Home: React.FC = () => {
         <div className="circle"></div>
       </div>
 
-      <main className="home_main">
+      {/* <main className="home_main">
         <h1 className="home_main_h1">
           <span>Train Crypto</span>
           <span>Chat AI</span>
@@ -199,26 +198,20 @@ const Home: React.FC = () => {
       </section>
 
       <h2 className="home_title_names">Delight Every Visitor</h2>
+      */}
 
-      <div className="home_ship">
+      {/* <div className="home_ship">
         <div className="home_ship_box">
           <p className="home_develop_left_p">
-            Developers love Next.js, the open source React framework Vercel
-            built together with Google and Facebook. Next.js powers the biggest
-            websites like Airbnb and Twilio, for use cases in e-commerce,
-            travel, news, and marketing.
+          Discover Hidden 100x Cryptocurrencies with AlvinAI The best AI-driven crypto research application.
           </p>
 
           <p className="home_develop_left_p">
-            Vercel is the best place to deploy any frontend app. Start by
-            deploying with zero configuration to our global edge network. Scale
-            dynamically to millions of pages without breaking a sweat.
+          Harness the power of artificial intelligence to unlock new investment opportunities. Gain an edge in the crypto market and make informed decisions for maximized potential.
           </p>
         </div>
 
-
-        <Global />
-      </div>
+      </div>  */}
 
       <FootLanDing />
     </div>

@@ -38,6 +38,13 @@ tr {
   border-bottom: none !important;
 }
 
+.icon_tele {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
 @media screen and (max-width: 768px) {
   .foot_rule {
     display: flex;

@@ -35,57 +35,169 @@ export default function Login() {
     }
   };
 
-  const handlePasswordLogin = async (
-    email: string,
-    password: string
-    // callbackUrl: string
-  ) => {
-    const formData = new FormData();
-    formData.append("username", email);
-    formData.append("password", password);
+  // const handlePasswordLogin = async (
+  //   email: string,
+  //   password: string
+  //   // callbackUrl: string
+  // ) => {
+  //   const formData = new FormData();
+  //   formData.append("username", email);
+  //   formData.append("password", password);
 
-    try {
-      const json = await apiClient.passwordAuth(formData);
-      setAccessToken(json.access_token);
-      // navigate(callbackUrl);
-      navigate("/message");
-    } catch (error: any) {
-      setError(error.message);
-    }
-  };
+  //   try {
+  //     const json = await apiClient.passwordAuth(formData);
+  //     setAccessToken(json.access_token);
+  //     // navigate(callbackUrl);
+  //     navigate("/message");
+  //   } catch (error: any) {
+  //     setError(error.message);
+  //   }
+  // };
 
-  useEffect(() => {
-    setError(query.get("error") || "");
-  }, [query]);
+  // const handlePasswordLogin = async () => {
+  //   const email = "leanhduc1510@gmail.com";
+  //   const password = "111111";
 
-  useEffect(() => {
-    if (!config) {
-      return;
-    }
+  //   try {
+  //     if (email === "leanhduc1510@gmail.com" && password === "111111") {
+  //       setAccessToken("cvdvdgdfgdgg");
+  //       navigate("/message");
+  //     } else {
+  //       setError("Invalid email or password");
+  //     }
+  //   } catch (error: any) {
+  //     setError(error.message);
+  //   }
+  // };
 
-    if (user) {
-      navigate("/message");
-      return;
-    }
-    if (!config.requireLogin) {
-      navigate("/");
-    }
-    if (config.headerAuth) {
-      handleHeaderAuth();
-    }
-    // if (user) {
-    //   navigate('/message');
-    // }
-    document.title = "Sign in - Alvin AI";
-  }, [config, user]);
 
-  const handleGoogleSignIn = async () => {
-    window.location.href = apiClient.getOAuthEndpoint("google");
-  };
+
+
+  //   function handleGoogleSignIn() {
+  //     const authUrl = 'https://qdvtgrjggloztjbsdrjp.supabase.co/auth/v1/authorize?provider=google&redirect_to=http://localhost:3000/message';
+
+  //     window.location.href = authUrl;
+
+  //     window.addEventListener('storage', () => {
+  //         const accessToken = localStorage.getItem('access_token');
+  //         if (accessToken) {
+  //             fetch('https://17be-58-186-28-29.ngrok-free.app/auth/header', {
+  //                 method: 'POST',
+  //                 headers: {
+  //                     'token': accessToken
+  //                 }
+  //             })
+  //             .then(response => {
+  //                 if (!response.ok) {
+  //                     throw new Error('Failed to set access token in header');
+  //                 }
+  //                 navigate("/message");
+  //             })
+  //             .catch(error => {
+  //                 console.error('Failed to set access token in header:', error);
+  //             });
+  //         }
+  //     });
+  // }
+
+
+
+
+//   function handleGoogleSignIn(): void {
+//     const authUrl: string = 'https://qdvtgrjggloztjbsdrjp.supabase.co/auth/v1/authorize?provider=google&redirect_to=http://localhost:3000/message';
+
+//     window.location.href = authUrl;
+// }
+
+//    window.addEventListener('message', (event: MessageEvent) => {
+//     // console.log('Received message:', event.data)
+//     if (event.origin === 'https://qdvtgrjggloztjbsdrjp.supabase.co') {
+//         const accessToken: string | undefined = event.data?.access_token;
+//         if (accessToken) {
+//             localStorage.setItem('access_token', accessToken);
+//             fetch('http://192.168.0.110:5050/auth/header', {
+//                 method: 'POST',
+//                 headers: {
+//                     'Authorization': accessToken
+//                 }
+//             })
+//             .then(response => {
+//                 if (!response.ok) {
+//                     throw new Error('Failed to set access token in header');
+//                 }
+//                 window.location.href = '/message';
+//             })
+//             .catch(error => {
+//                 console.error('Failed to set access token in header:', error);
+//             });
+//         }
+//     }
+// });
+
+function handleGoogleSignIn(): void {
+  const authUrl: string = 'https://qdvtgrjggloztjbsdrjp.supabase.co/auth/v1/authorize?provider=google&redirect_to=http://localhost:3000/message';
+
+  window.location.href = authUrl;
+}
+
+window.addEventListener('message', (event: MessageEvent) => {
+  if (event.origin === 'https://qdvtgrjggloztjbsdrjp.supabase.co') {
+      const accessToken: string | undefined = event.data?.access_token;
+      if (accessToken) {
+          localStorage.setItem('access_token', accessToken);
+          fetch('https://avinai-api.tekup.vn/auth/header', {
+              method: 'POST',
+              headers: {
+                  'Authorization': `Bearer ${accessToken}`
+              }
+          })
+          .then(response => {
+              if (!response.ok) {
+                  throw new Error('Failed to set access token in header');
+              }
+              window.location.href = '/message';
+          })
+          .catch(error => {
+              console.error('Failed to set access token in header:', error);
+          });
+      }
+  }
+});
+
+
+
+
+
+
+  // function handleGoogleSignIn() {
+  //   const authUrl = 'https://qdvtgrjggloztjbsdrjp.supabase.co/auth/v1/authorize?provider=google&redirect_to=http://localhost:3000/message';
+
+  //   window.location.href = authUrl;
+
+  //   window.addEventListener('storage', async () => {
+  //     const accessToken = localStorage.getItem('access_token');
+  //     if (accessToken) {
+  //       try {
+  //         const response = await apiClient.post('/auth/header', {
+  //           headers: {
+  //             "Authorization": accessToken
+  //           }
+  //         });
+  //         if (!response.ok) {
+  //           console.log('Failed to set access token in header');
+  //         }
+  //         navigate("/message");
+  //       } catch (error) {
+  //         console.error('Failed to set access token in header:', error);
+  //       }
+  //     }
+  //   });
+  // }
 
   const handleTwitterSignIn = async () => {
     window.location.href = apiClient.getOAuthEndpoint("twitter");
   };
+
 
   return (
     <Stack>
@@ -111,7 +223,7 @@ export default function Login() {
         </Typography>
       </Link>
 
-      
+
 
       <Box
         sx={{
@@ -212,7 +324,7 @@ export default function Login() {
             </Typography>
           </div>
 
-          <Box className="sign_in_google" onClick={handleTwitterSignIn}>
+          <Box className="sign_in_google">
             <img src={twitter} alt="" className="sign_in_google_imgs" />
 
             <Typography
@@ -230,7 +342,7 @@ export default function Login() {
         </Box>
       </Box>
 
-      <AuthLogin
+      {/* <AuthLogin
           title="Sign In"
           error={error}
           callbackUrl="/message"
@@ -255,7 +367,7 @@ export default function Login() {
           hahahaha
           </div>
           }
-        />
+        /> */}
     </Stack>
   );
 }

@@ -104,7 +104,7 @@ const NavLanDing: React.FC = () => {
           target="_blank"
           className="decoration"
         >
-          <li className="navlanding_li">Research By AI <span></span></li>
+          <li className="navlanding_li">Customer Support<span></span></li>
         </Link>
       </ul>
 

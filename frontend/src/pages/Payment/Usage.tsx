@@ -109,7 +109,7 @@ const CustomLinearProgress = ({ value }: { value: number }) => {
             <Alert severity="error">{errorMessage}</Alert>
           ) : (
             <Alert severity="info">
-              Please enter a token value between 100 and 10000.
+              Please enter a token value from 10 USDT.
             </Alert>
           )}
         </DialogContent>
