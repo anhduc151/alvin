@@ -49,6 +49,11 @@ const Page = ({ children }: Props) => {
           {children}
         </Stack>
       )}
+
+      {/* <Stack direction="row" height="100%" width="100%" overflow="auto">
+          <ThreadHistorySideBar />
+          {children}
+        </Stack> */}
     </Box>
   );
 };

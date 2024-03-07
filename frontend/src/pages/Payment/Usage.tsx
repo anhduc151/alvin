@@ -46,6 +46,10 @@ const CustomLinearProgress = ({ value }: { value: number }) => {
     }
   };
 
+  const handleOptionClick = (amount: number) => {
+    setInputValue(amount.toString());
+  };
+
   const handleConfirmPurchase = () => {
     if (parseInt(inputValue) < 50) {
       setErrorMessage("Minimum token amount is 50.");
@@ -105,6 +109,13 @@ const CustomLinearProgress = ({ value }: { value: number }) => {
             }}
             sx={{ mb: 2 }}
           />
+          <Box sx={{ display: "flex", gap: "10px", mb: 2 }}>
+            <Button onClick={() => handleOptionClick(10)}>10</Button>
+            <Button onClick={() => handleOptionClick(20)}>20</Button>
+            <Button onClick={() => handleOptionClick(100)}>100</Button>
+            <Button onClick={() => handleOptionClick(200)}>200</Button>
+          </Box>
+
           {errorMessage ? (
             <Alert severity="error">{errorMessage}</Alert>
           ) : (

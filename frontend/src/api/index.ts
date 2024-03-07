@@ -2,9 +2,9 @@ import { toast } from 'sonner';
 
 import { ChainlitAPI, ClientError } from '@chainlit/react-client';
 
-// const devServer = 'http://192.168.0.110:5050';
+const devServer = 'http://192.168.0.110:5050';
 // const devServer = 'https://crypto-beat--alvin.modal.run';
-const devServer = 'https://avinai-api.tekup.vn/';
+// const devServer = 'https://avinai-api.tekup.vn';
 const url = import.meta.env.DEV ? devServer : window.origin;
 const serverUrl = new URL(url);
 
