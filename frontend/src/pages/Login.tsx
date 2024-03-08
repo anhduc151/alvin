@@ -75,6 +75,12 @@ export default function Login() {
     window.location.href = authUrl;
   }
 
+  useEffect(() => {
+    if (window.location.pathname === '/message') {
+      console.log("Redirected to message page.");
+    }
+  }, []);
+
   return (
     <Stack>
       <Link to="/" className="login_name decoration" style={{ zIndex: 100 }}>

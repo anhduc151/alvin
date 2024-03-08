@@ -62,7 +62,7 @@ const Active: React.FC = () => {
                 color: "#fff",
               }}
             />
-            29 USDT <span style={{ color: "#9b9a9a" }}>/per month</span>
+            100 USDT <span style={{ color: "#9b9a9a" }}>/per month</span>
           </Typography>
         </Box>
 
