@@ -141,7 +141,7 @@ const CustomLinearProgress = ({ value }: { value: number }) => {
 
 const Usesage: React.FC = () => {
   return (
-    <Box sx={{ width: "400px" }}>
+    <Box sx={{ width: "400px", border: "1px solid #383838", padding: "20px", borderRadius: "20px" }}>
       <CustomLinearProgress value={0} />
     </Box>
   );

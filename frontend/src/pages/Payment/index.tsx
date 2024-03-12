@@ -28,7 +28,7 @@ const Payment: React.FC = () => {
   
   return (
     <Page>
-      <Box sx={{ width: "100%", padding: "30px", color: "text.primary", overflow: "auto", display: "flex", gap: "20px", alignItem: "center"}}>
+      <Box sx={{ width: "100%", padding: "30px", color: "text.primary", overflow: "auto", display: "flex", alignItem: "center"}}>
         <Box>
           <Typography sx={{ fontWeight: "700", paddingBottom: "12px" }}>
             Active Subscription

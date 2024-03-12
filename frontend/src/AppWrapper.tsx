@@ -33,15 +33,14 @@ export default function AppWrapper() {
       : null
   );
 
-  if (
-    isReady &&
-    !isAuthenticated &&
-    window.location.pathname !== '/login' &&
-    window.location.pathname !== '/login/callback'
-  ) {
-    window.location.href = '/login';
-  }
-  
+  // if (
+  //   isReady &&
+  //   !isAuthenticated &&
+  //   window.location.pathname !== '/login' &&
+  //   window.location.pathname !== '/login/callback'
+  // ) {
+  //   window.location.href = '/login';
+  // }
 
   useEffect(() => {
     if (!data) return;

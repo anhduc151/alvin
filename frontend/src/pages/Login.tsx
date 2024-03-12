@@ -25,15 +25,15 @@ export default function Login() {
 
   const navigate = useNavigate();
 
-  const handleHeaderAuth = async () => {
-    try {
-      const json = await apiClient.headerAuth();
-      setAccessToken(json.access_token);
-      navigate("/message");
-    } catch (error: any) {
-      setError(error.message);
-    }
-  };
+  // const handleHeaderAuth = async () => {
+  //   try {
+  //     const json = await apiClient.headerAuth();
+  //     setAccessToken(json.access_token);
+  //     navigate("/message");
+  //   } catch (error: any) {
+  //     setError(error.message);
+  //   }
+  // };
 
   // const handlePasswordLogin = async (
   //   email: string,
@@ -75,11 +75,7 @@ export default function Login() {
     window.location.href = authUrl;
   }
 
-  useEffect(() => {
-    if (window.location.pathname === '/message') {
-      console.log("Redirected to message page.");
-    }
-  }, []);
+
 
   return (
     <Stack>
