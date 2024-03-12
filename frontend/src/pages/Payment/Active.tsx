@@ -209,7 +209,7 @@ const Active: React.FC = () => {
 const styleActive = {
   border: "1px solid #383838",
   borderRadius: "20px",
-  width: "600px",
+  width: "100%",
   height: "100%",
   display: "flex",
   flexDirection: "column",
