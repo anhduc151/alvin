@@ -1,29 +1,35 @@
-import { useAuth } from "api/auth";
-import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useRecoilValue } from "recoil";
+import { useAuth } from 'api/auth';
+import { useEffect, useState } from 'react';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+
+import { Box, Button, Stack, Typography } from '@mui/material';
+
+import { AuthLogin } from '@chainlit/react-components';
+
+import { Logo } from 'components/atoms/logo';
+
+import google from '../assets/google.png';
+import abc from '../assets/public.png';
+import twitter from '../assets/twitter.png';
 
 // import { Logo } from 'components/atoms/logo';
+import { useQuery } from 'hooks/query';
 
-import { useQuery } from "hooks/query";
+import { apiClientState } from 'state/apiClient';
 
-import { apiClientState } from "state/apiClient";
-import "./login.css";
-
-import { Box, Button, Stack, Typography } from "@mui/material";
-import { Logo } from "components/atoms/logo";
-import { AuthLogin } from "@chainlit/react-components";
-import google from "../assets/google.png";
-import twitter from "../assets/twitter.png";
-import abc from "../assets/public.png";
+import './login.css';
 
 export default function Login() {
   const query = useQuery();
   const { data: config, setAccessToken, user } = useAuth();
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
   const apiClient = useRecoilValue(apiClientState);
+  const params = useParams();
 
   const navigate = useNavigate();
+  // const json = await apiClient.headerAuth();
+  // console.log('apiClient', json);
 
   // const handleHeaderAuth = async () => {
   //   try {
@@ -71,56 +77,53 @@ export default function Login() {
   // };
 
   const handleGoogleSignIn = () => {
-    const authUrl: string = 'https://qdvtgrjggloztjbsdrjp.supabase.co/auth/v1/authorize?provider=google&redirect_to=http://localhost:3000/message';
+    const authUrl: string =
+      'https://qdvtgrjggloztjbsdrjp.supabase.co/auth/v1/authorize?provider=google&redirect_to=http://localhost:3000/login';
     window.location.href = authUrl;
-  }
-
-
+  };
 
   return (
     <Stack>
       <Link to="/" className="login_name decoration" style={{ zIndex: 100 }}>
         <Logo
           style={{
-            width: "30px",
-            height: "30px",
-            borderRadius: "50%",
-            border: "1px solid #000",
+            width: '30px',
+            height: '30px',
+            borderRadius: '50%',
+            border: '1px solid #000'
           }}
         />
 
         <Typography
           sx={{
             // color: "text.primary",
-            color: "#fff",
-            fontWeight: "700",
-            fontSize: "17px",
+            color: '#fff',
+            fontWeight: '700',
+            fontSize: '17px'
           }}
         >
           Alvin AI
         </Typography>
       </Link>
 
-
-
       <Box
         sx={{
-          backgroundColor: "#000",
-          width: "100vw",
-          height: "100vh",
-          display: "flex",
-          gap: "4rem",
+          backgroundColor: '#000',
+          width: '100vw',
+          height: '100vh',
+          display: 'flex',
+          gap: '4rem',
           // justifyContent: "space-evenly",
-          alignItems: "center",
+          alignItems: 'center'
         }}
       >
         <Box
           sx={{
-            position: "relative",
-            height: "100%",
-            "@media (max-width: 768px)": {
-              display: "none",
-            },
+            position: 'relative',
+            height: '100%',
+            '@media (max-width: 768px)': {
+              display: 'none'
+            }
           }}
         >
           {/* <div className="rocket">
@@ -160,15 +163,15 @@ export default function Login() {
 
         <Box
           sx={{
-            backgroundColor: "#000",
-            border: "1px solid #424242",
-            padding: "2rem",
-            borderRadius: "20px",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-            gap: "20px",
+            backgroundColor: '#000',
+            border: '1px solid #424242',
+            padding: '2rem',
+            borderRadius: '20px',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            gap: '20px'
           }}
         >
           <h1 className="login_h1">Sign In</h1>
@@ -179,10 +182,10 @@ export default function Login() {
             <Typography
               sx={{
                 // color: "text.primary",
-                color: "#fff",
-                padding: "10px 20px",
-                fontWeight: "400",
-                fontSize: "17px",
+                color: '#fff',
+                padding: '10px 20px',
+                fontWeight: '400',
+                fontSize: '17px'
               }}
             >
               Sign in with Google
@@ -194,8 +197,8 @@ export default function Login() {
               className="or"
               sx={{
                 // color: "text.primary",
-                color: "#fff",
-                fontSize: "17px",
+                color: '#fff',
+                fontSize: '17px'
               }}
             >
               Or
@@ -208,10 +211,10 @@ export default function Login() {
             <Typography
               sx={{
                 // color: "text.primary",
-                color: "#fff",
-                padding: "10px 20px",
-                fontWeight: "400",
-                fontSize: "17px",
+                color: '#fff',
+                padding: '10px 20px',
+                fontWeight: '400',
+                fontSize: '17px'
               }}
             >
               Sign in with Twitter
