@@ -30,5 +30,8 @@ export default defineConfig({
       lodash: path.resolve(__dirname, './node_modules/lodash'),
       recoil: path.resolve(__dirname, './node_modules/recoil')
     }
-  }
+  },
+  server: {
+    port: 3000,
+  },
 });

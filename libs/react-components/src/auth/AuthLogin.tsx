@@ -2,7 +2,7 @@ import { useFormik } from 'formik';
 import { useEffect, useState } from 'react';
 import PasswordChecklist, { RuleNames } from 'react-password-checklist';
 import { TextInput } from 'src/inputs/TextInput';
-import { grey } from 'theme/palette';
+// import { grey } from 'theme/palette';
 import { useToggle } from 'usehooks-ts';
 import * as yup from 'yup';
 
@@ -70,6 +70,7 @@ type AuthLoginProps = {
     minLength?: number;
     maxLength?: number;
   };
+  renderElementBottom?: React.ReactNode;
 };
 
 const AuthLogin = ({
@@ -82,7 +83,8 @@ const AuthLogin = ({
   onForgotPassword,
   onSignUp,
   renderLogo,
-  passwordChecklistSettings
+  passwordChecklistSettings,
+  renderElementBottom
 }: AuthLoginProps) => {
   const [loading, setLoading] = useState(false);
   const [isPasswordValid, setIsPasswordValid] = useState(
@@ -134,7 +136,7 @@ const AuthLogin = ({
   });
 
   return (
-    <AuthTemplate title={title} renderLogo={renderLogo}>
+    <AuthTemplate title={title} renderLogo={renderLogo} renderElementBottom={renderElementBottom}>
       {errorState ? (
         <Alert sx={{ my: 1 }} severity="error">
           {getErrorMessage(errorState)}
@@ -143,6 +145,7 @@ const AuthLogin = ({
 
       {onPasswordSignIn ? (
         <form onSubmit={formik.handleSubmit}>
+          
           <TextInput
             id="email"
             placeholder="Email address"
@@ -222,6 +225,7 @@ const AuthLogin = ({
           >
             Continue
           </Button>
+          <>{renderElementBottom}</>
         </form>
       ) : null}
 
@@ -247,20 +251,20 @@ const AuthLogin = ({
       {onPasswordSignIn && oAuthReady ? (
         <Typography
           color="text.primary"
-          sx={{
-            alignItems: 'center',
-            direction: 'row',
-            display: 'flex',
-            gap: 2,
-            marginTop: 1,
-            width: '100%',
-            ':before, :after': {
-              content: '""',
-              borderBottom: `1px solid ${grey[400]}`,
-              height: '0.5px',
-              flex: '1 0 auto'
-            }
-          }}
+          // sx={{
+          //   alignItems: 'center',
+          //   direction: 'row',
+          //   display: 'flex',
+          //   gap: 2,
+          //   marginTop: 1,
+          //   width: '100%',
+          //   ':before, :after': {
+          //     content: '""',
+          //     borderBottom: `1px solid ${grey[400]}`,
+          //     height: '0.5px',
+          //     flex: '1 0 auto'
+          //   }
+          // }}
         >
           OR
         </Typography>
@@ -277,6 +281,7 @@ const AuthLogin = ({
           ))}
         </Stack>
       ) : null}
+      
     </AuthTemplate>
   );
 };
