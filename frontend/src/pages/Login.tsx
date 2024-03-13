@@ -112,9 +112,14 @@ export default function Login() {
           width: '100vw',
           height: '100vh',
           display: 'flex',
-          gap: '4rem',
-          // justifyContent: "space-evenly",
-          alignItems: 'center'
+          alignItems: 'center',
+          '@media (max-width: 768px)': {
+            width: '100vw',
+            height: '100vh',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }
         }}
       >
         <Box
@@ -126,36 +131,6 @@ export default function Login() {
             }
           }}
         >
-          {/* <div className="rocket">
-            <div className="rocket-body">
-              <div className="body"></div>
-              <div className="fin fin-left"></div>
-              <div className="fin fin-right"></div>
-              <div className="window"></div>
-            </div>
-            <div className="exhaust-flame"></div>
-            <ul className="exhaust-fumes">
-              <li></li>
-              <li></li>
-              <li></li>
-              <li></li>
-              <li></li>
-              <li></li>
-              <li></li>
-              <li></li>
-              <li></li>
-            </ul>
-            <ul className="star">
-              <li></li>
-              <li></li>
-              <li></li>
-              <li></li>
-              <li></li>
-              <li></li>
-              <li></li>
-            </ul>
-          </div> */}
-
           <div className="login_left">
             <img src={abc} alt="" className="login_left_imgs" />
           </div>
