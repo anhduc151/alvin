@@ -1,4 +1,4 @@
-import { SystemModel } from './SystemModel';
+import { AddressCrypto, SystemModel } from './SystemModel';
 
 export type CryptoCurrencyModel = SystemModel & {
   id: string;
@@ -6,7 +6,7 @@ export type CryptoCurrencyModel = SystemModel & {
   description: string;
   active: boolean;
   symbol: string;
-  contract_address: `0x${string}`;
+  contract_address: AddressCrypto;
   decimal: number;
   chain: string;
   chain_id: number;

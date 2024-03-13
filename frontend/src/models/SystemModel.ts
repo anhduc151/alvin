@@ -6,3 +6,5 @@ export type SystemModel = {
   created_at: string;
   updated_at: string;
 };
+
+export type AddressCrypto = `0x${string}`

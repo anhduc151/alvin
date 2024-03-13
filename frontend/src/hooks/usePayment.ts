@@ -14,23 +14,25 @@ export function usePayment() {
   const { connect, connectors } = useConnect();
   const { isConnected } = useAccount();
   const account = useAccount();
-  const { data: hash, error, isPending, writeContract } = useWriteContract();
+  const { data: hash, error, isPending, writeContractAsync } = useWriteContract();
 
   const payment = async (price: number) => {
     if (!cryptoCurrencies) return;
     if (isConnected) {
       console.log('account', account);
       console.log('cryptoCurrencies: ', cryptoCurrencies);
-      const data = writeContract({
+      const data = await writeContractAsync({
         chainId: cryptoCurrencies[0].chain_id ?? bscTestnet.id,
         address: cryptoCurrencies[0].contract_address, // change to receipient address
         functionName: 'transfer',
         abi: erc20Abi,
         args: [
           import.meta.env.VITE_OWNER_ADDRESS_WALLET,
-          BigInt(price * 10 ** cryptoCurrencies[0].decimal)
+          BigInt((price / 10000) * 10 ** cryptoCurrencies[0].decimal)
         ]
       });
+      console.log('writeContract', data);
+      return {crypto: cryptoCurrencies[0], data};
     } else {
       connect({ connector: connectors[0], chainId: mainnet.id });
     }
@@ -54,4 +56,3 @@ export function usePayment() {
     isSuccess
   };
 }
-

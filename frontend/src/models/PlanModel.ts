@@ -1,4 +1,4 @@
-import { SystemModel } from './SystemModel';
+import { AddressCrypto, SystemModel } from './SystemModel';
 
 export type PlanModel = SystemModel & {
   id: string;
@@ -16,5 +16,5 @@ export type PlanModel = SystemModel & {
 export type PlanOrderPaymentBodyModel = {
   num_crypto_currency: number;
   crypto_currency_id: string;
-  transaction_hash: `0x${string}`;
+  transaction_hash: AddressCrypto;
 };

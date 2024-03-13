@@ -1,6 +1,6 @@
 import { CryptoCurrencyModel } from './CryptoCurrencyModel';
 import { PlanModel } from './PlanModel';
-import { SystemModel } from './SystemModel';
+import { AddressCrypto, SystemModel } from './SystemModel';
 
 export type OrderModel = SystemModel & {
   id: string;
@@ -8,7 +8,7 @@ export type OrderModel = SystemModel & {
   status: OrderStatus;
   current_price: number;
   num_crypto_currency: string;
-  transaction_hash: `0x${string}`;
+  transaction_hash: AddressCrypto;
   plan_id: string;
   crypto_currency_id: string;
   crypto_currency: CryptoCurrencyModel;
