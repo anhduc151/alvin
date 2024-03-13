@@ -3,8 +3,8 @@ import Page from "pages/Page";
 import React, { useEffect, useState } from "react";
 import { Active } from "./Active";
 import { History } from "./History";
-import { Usesage } from "./Usage";
-import { toast } from "sonner";
+import { Usage } from "./Usage";
+import { HistoryToken } from "./HistoryToken";
 
 const Payment: React.FC = () => {
   const [planData, setPlanData] = useState<any>(null);
@@ -48,7 +48,7 @@ const Payment: React.FC = () => {
     } else {
       return (
         <Typography sx={{ fontWeight: "700", fontFamily: "PT Sans" }}>
-          Expires on date version Pro: {new Date(planData.end_date).toLocaleDateString()}
+          Plan Pro of you Expires on date {new Date(planData.end_date).toLocaleDateString()}
         </Typography>
       );
     }
@@ -70,7 +70,11 @@ const Payment: React.FC = () => {
             justifyContent: 'center',
           }
         }}>
-          <Box>
+          <Box sx={{
+            '@media (max-width: 768px)': {
+              paddingTop: "540px",
+            }
+          }}>
             <Typography sx={{ fontWeight: "700", paddingBottom: "12px" }}>
               Active Subscription
             </Typography>
@@ -89,7 +93,13 @@ const Payment: React.FC = () => {
               Usage Limit
             </Typography>
 
-            <Usesage />
+            <Usage />
+
+            <Typography sx={{ fontWeight: "700", paddingBottom: "12px", paddingTop: "20px" }}>
+              Token Purchase History
+            </Typography>
+
+            <HistoryToken />
           </Box>
         </Box>
       </Box>

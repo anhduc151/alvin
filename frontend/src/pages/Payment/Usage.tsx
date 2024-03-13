@@ -13,7 +13,6 @@ import Alert from "@mui/material/Alert";
 const CustomLinearProgress = ({ value }: { value: number }) => {
   const [progress, setProgress] = useState(value);
   const [openDialog, setOpenDialog] = useState(false);
-  const [tokenAmount, setTokenAmount] = useState<number | "">(50);
   const [inputValue, setInputValue] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
 
@@ -27,43 +26,51 @@ const CustomLinearProgress = ({ value }: { value: number }) => {
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value.trim();
-    setInputValue(value);
-    if (
-      value === "" ||
-      (!isNaN(parseInt(value)) &&
-        parseInt(value) >= 50 &&
-        parseInt(value) <= 5000)
-    ) {
-      setTokenAmount(value !== "" ? parseInt(value) : "");
-      if (value !== "" && (parseInt(value) < 50 || parseInt(value) > 5000)) {
-        setErrorMessage("Please enter a value between 50 and 5000 tokens.");
-      } else {
-        setErrorMessage("");
-      }
-    } else {
-      setErrorMessage("Please enter a valid number between 50 and 5000.");
-    }
+    setInputValue(event.target.value.trim());
   };
 
-  const handleOptionClick = (amount: number) => {
-    setInputValue(amount.toString());
-  };
+
 
   const handleConfirmPurchase = () => {
+    const tokenGG = localStorage.getItem('token_gg');
+    if (!tokenGG) {
+      console.error('No Google token found.');
+      return;
+    }
+
     if (parseInt(inputValue) < 50) {
       setErrorMessage("Minimum token amount is 50.");
     } else if (parseInt(inputValue) > 5000) {
       setErrorMessage("Maximum token amount is 5000.");
     } else {
-      const newProgress = Math.min(
-        progress + (parseInt(inputValue) / 1000) * 100,
-        100
-      );
-      setProgress(newProgress);
-      setOpenDialog(false);
+      fetch(`${import.meta.env.VITE_DEVSERVER_URL}/v1/api/user/my-token-order`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${tokenGG}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ tokenAmount: parseInt(inputValue) })
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Failed to purchase tokens');
+          }
+          return response.json(); // Parse response body as JSON
+        })
+        .then(data => {
+          if (data.words !== null) {
+            console.log("Server response:", data.words); // Log the server response
+            setOpenDialog(false);
+          } else {
+            throw new Error('Server response is null');
+          }
+        })
+        .catch(error => {
+          console.error('Error purchasing tokens:', error);
+        });
     }
   };
+
 
   return (
     <Box sx={{ width: "100%" }}>
@@ -73,8 +80,7 @@ const CustomLinearProgress = ({ value }: { value: number }) => {
         </Box>
         <Box sx={{ minWidth: 35 }}>
           <Typography variant="body2" sx={{ width: "145px", color: "red" }}>
-            {tokenAmount === "" ? "---" : tokenAmount} /1000{" "}
-            <span style={{ color: "#fff" }}>Tokens</span>
+            --- /1000 <span style={{ color: "#fff" }}>Tokens</span>
           </Typography>
         </Box>
       </Box>
@@ -104,31 +110,21 @@ const CustomLinearProgress = ({ value }: { value: number }) => {
             inputProps={{
               inputMode: "numeric",
               pattern: "[0-9]*",
-              min: 100,
-              max: 10000,
+              min: 50,
+              max: 5000,
             }}
             sx={{ mb: 2 }}
           />
-          <Box sx={{ display: "flex", gap: "10px", mb: 2 }}>
-            <Button onClick={() => handleOptionClick(10)}>10</Button>
-            <Button onClick={() => handleOptionClick(20)}>20</Button>
-            <Button onClick={() => handleOptionClick(100)}>100</Button>
-            <Button onClick={() => handleOptionClick(200)}>200</Button>
-          </Box>
 
-          {errorMessage ? (
+          {errorMessage && (
             <Alert severity="error">{errorMessage}</Alert>
-          ) : (
-            <Alert severity="info">
-              Please enter a token value from 10 USDT.
-            </Alert>
           )}
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseDialog}>Cancel</Button>
           <Button
             onClick={handleConfirmPurchase}
-            disabled={errorMessage !== ""}
+            // disabled={!inputValue || errorMessage}
             color="primary"
           >
             Confirm
@@ -139,7 +135,7 @@ const CustomLinearProgress = ({ value }: { value: number }) => {
   );
 };
 
-const Usesage: React.FC = () => {
+const Usage: React.FC = () => {
   return (
     <Box sx={{ width: "100%", border: "1px solid #383838", padding: "20px", borderRadius: "20px" }}>
       <CustomLinearProgress value={0} />
@@ -147,4 +143,4 @@ const Usesage: React.FC = () => {
   );
 };
 
-export { Usesage };
+export { Usage };

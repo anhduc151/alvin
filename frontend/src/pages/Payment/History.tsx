@@ -54,15 +54,15 @@ const History: React.FC = () => {
   };
 
   const columns: GridColDef[] = [
-    { field: 'name', headerName: 'Name', width: 200 },
-    { field: 'price', headerName: 'Price', width: 150 },
+    { field: 'name', headerName: 'Name', width: 100 },
+    { field: 'price', headerName: 'Price', width: 100 },
     {
       field: 'status',
       headerName: 'Status',
-      width: 200,
+      width: 150,
       renderCell: (params) => getStatusChip(params.value)
     },
-    { field: 'transaction_hash', headerName: 'Transaction Hash', width: 200 }
+    { field: 'transaction_hash', headerName: 'Transaction Hash', width: 250 }
   ];
 
   return (
