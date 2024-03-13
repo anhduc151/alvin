@@ -205,9 +205,11 @@ const Active: React.FC = () => {
     ));
   };
 
+  return (
+    <div>
       {renderPlans()}
     </div>
-  return <div>{renderPlans()}</div>;
+  );
 };
 
 const styleActive = {
