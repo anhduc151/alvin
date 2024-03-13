@@ -3,11 +3,11 @@ import { OrderStatus } from 'models/OrderModel';
 import { PlanOrderPaymentBodyModel } from 'models/PlanModel';
 import { AddressCrypto } from 'models/SystemModel';
 import React, { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import { Alert, Box, Button, Typography } from '@mui/material';
 
-import { useCryptoCurrency } from 'hooks/useCryptoCurrency';
 import { usePayment } from 'hooks/usePayment';
 import { usePlan } from 'hooks/usePlan';
 
@@ -21,16 +21,16 @@ interface Plan {
   used_in: number | null;
 }
 
-const Active: React.FC = () => {
+const Active = ({ setReloadHistory }: { setReloadHistory: any }) => {
   const [plans, setPlans] = useState<Plan[]>([]);
   const [purchased, setPurchased] = useState(false);
   const [isConfirming, setIsConfirming] = useState(false);
   const [orderStatus, setOrderStatus] = useState(OrderStatus.Ordering);
-  const { isLoading: isLoadingCrypto, error: errorCrypto } =
-    useCryptoCurrency();
-  const { payment, hash } = usePayment();
+  const { hash, payment, error: errPayment, isSuccess } = usePayment();
   const { orderPlan, planOrderPayment } = usePlan();
-  console.log('hash', hash);
+
+  // console.log('balance', balance.data, balance);
+
   useEffect(() => {
     const tokenGG = localStorage.getItem('token_gg');
 
@@ -76,11 +76,11 @@ const Active: React.FC = () => {
           | { crypto: CryptoCurrencyModel; data: AddressCrypto }
           | undefined;
         const order = await orderPlan(proPlan.id);
-        if (proPlan.price !== null && proPlan.price > 0 && !isLoadingCrypto) {
+        if (proPlan.price !== null && proPlan.price > 0) {
           paidCrypto = await payment(proPlan.price);
         }
-        console.log('hash', hash, 'order', order, 'paidCrypto', paidCrypto);
-        // if (order?.data) {
+        console.log('order', order, 'paidCrypto', paidCrypto);
+
         if (paidCrypto?.data && order?.data) {
           const body: PlanOrderPaymentBodyModel = {
             num_crypto_currency: 2,
@@ -90,12 +90,16 @@ const Active: React.FC = () => {
           const plan = await planOrderPayment(order.data.id, body);
           console.log('plan', plan);
           setPurchased(true);
+          toast.success('Payment successful');
         }
       }
-    } catch {
+    } catch (err) {
       setOrderStatus(OrderStatus.Ordering);
+      toast.error('Payment unsuccessful');
+      console.log(err);
     } finally {
       setIsConfirming(false);
+      setReloadHistory((prevState: any) => !prevState);
     }
   };
 
@@ -148,7 +152,7 @@ const Active: React.FC = () => {
                 <Button
                   variant="contained"
                   onClick={handlePurchase}
-                  disabled={isLoadingCrypto || errorCrypto !== undefined}
+                  disabled={isConfirming}
                   sx={{
                     backgroundColor: '#9BCF53',
                     '&:hover': { backgroundColor: '#BFEA7C' },
@@ -161,9 +165,7 @@ const Active: React.FC = () => {
                 <Button
                   variant="contained"
                   onClick={handlePurchase}
-                  disabled={
-                    isLoadingCrypto || errorCrypto !== undefined || isConfirming
-                  }
+                  disabled={isConfirming}
                   sx={{
                     backgroundColor: '#9BCF53',
                     '&:hover': { backgroundColor: '#BFEA7C' },

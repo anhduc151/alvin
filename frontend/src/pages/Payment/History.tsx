@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
+
 import { Box, Chip } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 
-const History: React.FC = () => {
+const History = ({ reload }: { reload: boolean }) => {
   const [orders, setOrders] = useState<any[]>([]);
-
+console.log(reload);
   useEffect(() => {
     const tokenGG = localStorage.getItem('token_gg');
 
@@ -30,7 +31,7 @@ const History: React.FC = () => {
           console.error('Error fetching orders:', error);
         });
     }
-  }, []);
+  }, [reload]);
 
   const getStatusChip = (status: string) => {
     let color = '';
@@ -50,7 +51,9 @@ const History: React.FC = () => {
       default:
         color = '#e0e0e0';
     }
-    return <Chip label={status} style={{ backgroundColor: color, color: 'white' }} />;
+    return (
+      <Chip label={status} style={{ backgroundColor: color, color: 'white' }} />
+    );
   };
 
   const columns: GridColDef[] = [
@@ -67,14 +70,21 @@ const History: React.FC = () => {
 
   return (
     <Box>
-      <DataGrid rows={orders} columns={columns} pagination sx={{
-        borderRadius: "20px", border: "1px solid #383838",
-        '@media (max-width: 768px)': {
-          width: '100%',
-        }
-      }} />
+      <DataGrid
+        rows={orders}
+        columns={columns}
+        pagination
+        sx={{
+          borderRadius: '20px',
+          border: '1px solid #383838',
+          '@media (max-width: 768px)': {
+            width: '100%'
+          }
+        }}
+      />
     </Box>
   );
 };
 
 export { History };
+

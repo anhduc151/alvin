@@ -3,11 +3,12 @@ import Page from "pages/Page";
 import React, { useEffect, useState } from "react";
 import { Active } from "./Active";
 import { History } from "./History";
-import { Usage } from "./Usage";
 import { HistoryToken } from "./HistoryToken";
+import { Usage } from "./Usage";
 
 const Payment: React.FC = () => {
   const [planData, setPlanData] = useState<any>(null);
+  const [reloadHistory, setReloadHistory] = useState(false);
 
   useEffect(() => {
     const tokenGG = localStorage.getItem('token_gg');
@@ -79,13 +80,13 @@ const Payment: React.FC = () => {
               Active Subscription
             </Typography>
 
-            <Active />
+            <Active setReloadHistory={setReloadHistory}/>
 
             <Typography sx={{ fontWeight: "700", paddingBottom: "12px" }}>
               Payment History
             </Typography>
 
-            <History />
+            <History reload={reloadHistory}/>
           </Box>
 
           <Box sx={{ width: "100%" }}>

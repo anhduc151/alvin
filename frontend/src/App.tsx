@@ -19,11 +19,14 @@ import SettingsModal from 'components/molecules/settingsModal';
 import ChatSettingsModal from 'components/organisms/chat/settings';
 import PromptPlayground from 'components/organisms/playground';
 
+import { ToastContainer } from 'react-toastify';
+
 import { apiClientState } from 'state/apiClient';
 import { projectSettingsState } from 'state/project';
 import { settingsState } from 'state/settings';
 import { userEnvState } from 'state/user';
 
+import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
 
 type Primary = {
@@ -127,22 +130,23 @@ function App() {
           }
         }}
       />
-      <WagmiProvider config={configWagmi}>
-        <QueryClientProvider client={queryClient}>
-          <Box
-            display="flex"
-            height="100vh"
-            width="100vw"
-            sx={{ overflowX: 'hidden' }}
-          >
-            <PromptPlayground />
-            <ChatSettingsModal />
-            <Hotkeys />
-            <SettingsModal />
-            <RouterProvider router={router} />
-          </Box>
-        </QueryClientProvider>
-      </WagmiProvider>
+        <WagmiProvider config={configWagmi}>
+          <QueryClientProvider client={queryClient}>
+            <Box
+              display="flex"
+              height="100vh"
+              width="100vw"
+              sx={{ overflowX: 'hidden' }}
+            >
+              <PromptPlayground />
+              <ChatSettingsModal />
+              <Hotkeys />
+              <SettingsModal />
+              <RouterProvider router={router} />
+              <ToastContainer />
+            </Box>
+          </QueryClientProvider>
+        </WagmiProvider>
     </ThemeProvider>
   );
 }

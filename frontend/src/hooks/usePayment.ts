@@ -2,6 +2,7 @@ import { erc20Abi } from 'viem';
 import {
   useAccount,
   useConnect,
+  useReadContract,
   useWaitForTransactionReceipt,
   useWriteContract
 } from 'wagmi';
@@ -10,13 +11,16 @@ import { bscTestnet, mainnet } from 'wagmi/chains';
 import { useCryptoCurrency } from './useCryptoCurrency';
 
 export function usePayment() {
-  const { cryptoCurrencies } = useCryptoCurrency();
+  const { getCrypto } = useCryptoCurrency();
   const { connect, connectors } = useConnect();
   const { isConnected } = useAccount();
   const account = useAccount();
-  const { data: hash, error, isPending, writeContractAsync } = useWriteContract();
+  ``;
+  const { data: hash, error, writeContractAsync } = useWriteContract();
 
   const payment = async (price: number) => {
+    const resCrypto = await getCrypto();
+    const cryptoCurrencies = resCrypto.results;
     if (!cryptoCurrencies) return;
     if (isConnected) {
       console.log('account', account);
@@ -32,27 +36,33 @@ export function usePayment() {
         ]
       });
       console.log('writeContract', data);
-      return {crypto: cryptoCurrencies[0], data};
+      return { crypto: cryptoCurrencies[0], data };
     } else {
-      connect({ connector: connectors[0], chainId: mainnet.id });
+      connect({ connector: connectors[0], chainId: bscTestnet.id });
     }
   };
 
-  const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({
-    hash
-  });
+  // const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({
+  //   hash
+  // });
 
-  const getHash = async (hash: string) => {
-    return hash;
+  const balance = () => {
+    const result = useReadContract({
+      chainId: bscTestnet.id,
+      abi: erc20Abi,
+      functionName: 'balanceOf',
+      address: '0x6d68b9Ee03410FFc5c8aB1a4Ae1EaEedbD1A5bcB',
+      args: ['0x80a2C8Ec9894DdD8f52eEf26eb6d11d46D3fC9A7']
+    });
+    return result;
   };
 
   return {
     payment,
-    getHash,
+    // balance,
     hash,
     error,
-    isPending,
-    isConfirming,
-    isSuccess
+    // isConfirming,
+    // isSuccess
   };
 }
