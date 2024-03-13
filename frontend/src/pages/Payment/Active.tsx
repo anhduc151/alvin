@@ -1,7 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import { OrderStatus } from 'models/OrderModel';
+import { PlanOrderPaymentBodyModel } from 'models/PlanModel';
+import React, { useEffect, useState } from 'react';
+
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import { Alert, Box, Button, Typography } from '@mui/material';
-import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
-import OrderStatus from './OrderStatus';
+
+import { useCryptoCurrency } from 'hooks/useCryptoCurrency';
+import { usePayment } from 'hooks/usePayment';
+import { usePlan } from 'hooks/usePlan';
 
 interface Plan {
   id: string;
@@ -18,7 +24,11 @@ const Active: React.FC = () => {
   const [purchased, setPurchased] = useState(false);
   const [cancelRequested, setCancelRequested] = useState(false);
   const [orderStatus, setOrderStatus] = useState(OrderStatus.Ordering);
-
+  const { isLoading: isLoadingCrypto, error: errorCrypto } =
+    useCryptoCurrency();
+  const { payment, hash } = usePayment();
+  const { orderPlan, planOrderPayment } = usePlan();
+  console.log('hash', hash);
   useEffect(() => {
     const tokenGG = localStorage.getItem('token_gg');
 
@@ -53,32 +63,28 @@ const Active: React.FC = () => {
     }
   }, []);
 
-  const handlePurchase = () => {
+  const handlePurchase = async () => {
     setPurchased(true);
     setOrderStatus(OrderStatus.Processing);
     setCancelRequested(false);
 
-    const proPlan = plans.find(plan => plan.name === 'Pro');
+    const proPlan = plans.find((plan) => plan.name === 'Pro');
     if (proPlan) {
-      const { id: planId } = proPlan;
-      const tokenGG = localStorage.getItem('token_gg');
-
-      fetch(`${import.meta.env.VITE_DEVSERVER_URL}/v1/api/user/plans/${planId}/order`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${tokenGG}`
-        }
-      })
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Failed to purchase plan');
-          }
-        })
-        .catch(error => {
-          console.error('Error purchasing plan:', error);
-        });
+      const order = await orderPlan(proPlan.id);
+      if (proPlan.price !== null && proPlan.price > 0 && !isLoadingCrypto) {
+        payment(proPlan.price);
+      }
+      console.log("order", order);
+      if (hash && order?.data) {
+        const body: PlanOrderPaymentBodyModel = {
+          num_crypto_currency: 2,
+          crypto_currency_id: '',
+          transaction_hash: hash
+        };
+        const plan = planOrderPayment(order.data.id, body);
+      }
     }
-  }
+  };
 
   const handleCancelPlan = () => {
     setCancelRequested(true);
@@ -199,12 +205,10 @@ const Active: React.FC = () => {
     ));
   };
 
-  return (
-    <div>
       {renderPlans()}
     </div>
-  );
-}
+  return <div>{renderPlans()}</div>;
+};
 
 const styleActive = {
   border: "1px solid #383838",
@@ -218,3 +222,4 @@ const styleActive = {
 };
 
 export { Active };
+
