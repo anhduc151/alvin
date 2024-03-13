@@ -35,22 +35,22 @@ const History: React.FC = () => {
   const getStatusChip = (status: string) => {
     let color = '';
     switch (status) {
-      case 'Ordering':
-        color = 'info';
+      case 'ordering':
+        color = '#2196f3';
         break;
-      case 'Processing':
-        color = 'warning';
+      case 'processing':
+        color = '#ff9800';
         break;
-      case 'Success':
-        color = 'success';
+      case 'success':
+        color = '#4caf50';
         break;
-      case 'Cancel':
-        color = 'error';
+      case 'cancel':
+        color = '#f44336';
         break;
       default:
-        color = 'default';
+        color = '#e0e0e0';
     }
-    return <Chip label={status} color={color as any} />;
+    return <Chip label={status} style={{ backgroundColor: color, color: 'white' }} />;
   };
 
   const columns: GridColDef[] = [
