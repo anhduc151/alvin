@@ -42,15 +42,6 @@ export default function AppWrapper() {
           localStorage.setItem('token_gg', tokenGG);
           setAccessToken(response?.access_token);
           window.location.href = '/message';
-          toast.success("Login successful!", {
-            style: {
-              top: 40,
-              backgroundColor: "green",
-              color: "white",
-              border: "none",
-            },
-            position: "top-right",
-          });
         })
         .catch((error) => {
           console.error('Failed to send access token to header:', error);

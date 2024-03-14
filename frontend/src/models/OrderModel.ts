@@ -16,7 +16,6 @@ export type OrderModel = SystemModel & {
 };
 
 export enum OrderStatus {
-  Ordering = 'ordering',
   Processing = 'processing',
   Success = 'success',
   Cancel = 'cancel'

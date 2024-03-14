@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Chip } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import CopyButton from 'components/atoms/buttons/CoppyButton';
 
 const HistoryToken: React.FC = () => {
     const [orders, setOrders] = useState<any[]>([]);
@@ -20,10 +21,10 @@ const HistoryToken: React.FC = () => {
                     const extractedOrders = data.results.map((order: any) => ({
                         id: order.id,
                         status: order.status,
-                        paid_at: order.paid_at,
-                        word: order.word,
-                        price: order.price,
-                        transaction_hash: order.transaction_hash
+                        paid_at: order.paid_at ? new Date(order.paid_at).toLocaleString() : '',
+                        word: order.word || '',
+                        price: order.price || 0,
+                        transaction_hash: order.transaction_hash || ''
                     }));
                     setOrders(extractedOrders);
                 })
@@ -33,33 +34,35 @@ const HistoryToken: React.FC = () => {
         }
     }, []);
 
+
     const getStatusChip = (status: string) => {
         let color = '';
         switch (status) {
-            case 'ordering':
-                color = '#2196f3';
-                break;
             case 'processing':
                 color = '#ff9800';
                 break;
-            case 'success':
+            case 'successful':
                 color = '#4caf50';
                 break;
             case 'cancel':
                 color = '#f44336';
                 break;
             default:
-                color = '#e0e0e0';
+                color = '#4c4848';
         }
-        return <Chip label={status} style={{ backgroundColor: color, color: 'white' }} />;
+        return <Chip label={status} style={{ backgroundColor: color, color: 'white', width: "100px" }} />;
     };
 
     const columns: GridColDef[] = [
-        { field: 'status', headerName: 'Status', width: 100, renderCell: (params) => getStatusChip(params.value) },
-        { field: 'paid_at', headerName: 'Paid At', width: 100 },
-        { field: 'word', headerName: 'Tokens', width: 100 },
-        { field: 'price', headerName: 'Price', width: 150 },
-        { field: 'transaction_hash', headerName: 'Transaction Hash', width: 200 }
+        { field: 'paid_at', headerName: 'Date', width: 200 },
+        { field: 'status', headerName: 'Status', width: 200, renderCell: (params) => getStatusChip(params.value) },
+        { field: 'word', headerName: 'Tokens', width: 200 },
+        { field: 'price', headerName: 'Price', width: 200 },
+        {
+            field: 'transaction_hash', headerName: 'Transaction Hash', width: 200, renderCell: (params) => (
+                <CopyButton value={params.value} />
+            )
+        },
     ];
 
     return (

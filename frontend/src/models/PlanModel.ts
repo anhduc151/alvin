@@ -17,4 +17,5 @@ export type PlanOrderPaymentBodyModel = {
   num_crypto_currency: number;
   crypto_currency_id: string;
   transaction_hash: AddressCrypto;
+  volume: number;
 };

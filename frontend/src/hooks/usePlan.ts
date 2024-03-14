@@ -3,17 +3,19 @@ import { OrderModel } from 'models/OrderModel';
 import { PlanOrderPaymentBodyModel } from 'models/PlanModel';
 
 export function usePlan() {
-  const orderPlan = async (planId: string) => {
+  const orderPlan = async (planId: string, volume: number) => {
+    const body = { volume };
     const response = await getFetch(
       `v1/api/user/plans/${planId}/order`,
-      'POST'
+      'POST',
+      body
     );
-
+  
     if (!response?.ok) {
       console.log('ERROR: ', response);
       throw new Error('Failed to purchase plan');
     }
-
+  
     return response.json() as Promise<{ data: OrderModel }>;
   };
 

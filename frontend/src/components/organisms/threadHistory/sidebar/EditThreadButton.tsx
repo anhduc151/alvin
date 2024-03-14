@@ -46,7 +46,7 @@ const EditThreadButton = ({ threadId, threadData, onEdit }: Props) => {
         },
         body: JSON.stringify({
           name: newThreadName,
-          tags: threadData.tags
+          tags: threadData
         })
       });
       

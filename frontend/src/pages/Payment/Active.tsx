@@ -19,17 +19,16 @@ interface Plan {
   numWordBonus: number | null;
   description: string | null;
   used_in: number | null;
+  can_register: boolean;
 }
 
 const Active = ({ setReloadHistory }: { setReloadHistory: any }) => {
   const [plans, setPlans] = useState<Plan[]>([]);
   const [purchased, setPurchased] = useState(false);
   const [isConfirming, setIsConfirming] = useState(false);
-  const [orderStatus, setOrderStatus] = useState(OrderStatus.Ordering);
-  const { hash, payment, error: errPayment, isSuccess } = usePayment();
+  const [orderStatus, setOrderStatus] = useState(OrderStatus.Processing);
+  const { hash, payment, error: errPayment } = usePayment();
   const { orderPlan, planOrderPayment } = usePlan();
-
-  // console.log('balance', balance.data, balance);
 
   useEffect(() => {
     const tokenGG = localStorage.getItem('token_gg');
@@ -55,8 +54,10 @@ const Active = ({ setReloadHistory }: { setReloadHistory: any }) => {
             numWord: result.num_word,
             numWordBonus: result.num_word_bonus,
             description: result.description,
-            used_in: result.used_in
+            used_in: result.used_in !== null ? result.used_in * 30 : null,
+            can_register: result.can_register
           }));
+
           setPlans(convertedPlans);
         })
         .catch((error) => {
@@ -65,36 +66,34 @@ const Active = ({ setReloadHistory }: { setReloadHistory: any }) => {
     }
   }, []);
 
-  const handlePurchase = async () => {
+  const handlePurchase = async (plan: Plan) => {
     setIsConfirming(true);
     setOrderStatus(OrderStatus.Processing);
 
     try {
-      const proPlan = plans.find((plan) => plan.name === 'Pro');
-      if (proPlan) {
-        let paidCrypto:
-          | { crypto: CryptoCurrencyModel; data: AddressCrypto }
-          | undefined;
-        const order = await orderPlan(proPlan.id);
-        if (proPlan.price !== null && proPlan.price > 0) {
-          paidCrypto = await payment(proPlan.price);
-        }
-        console.log('order', order, 'paidCrypto', paidCrypto);
+      let paidCrypto:
+        | { crypto: CryptoCurrencyModel; data: AddressCrypto }
+        | undefined;
+      const order = await orderPlan(plan.id, 1);
+      if (plan.price !== null && plan.price > 0) {
+        paidCrypto = await payment(plan.price);
+      }
+      console.log('order', order, 'paidCrypto', paidCrypto);
 
-        if (paidCrypto?.data && order?.data) {
-          const body: PlanOrderPaymentBodyModel = {
-            num_crypto_currency: 2,
-            crypto_currency_id: paidCrypto?.crypto?.id ?? '',
-            transaction_hash: paidCrypto?.data ?? '0x'
-          };
-          const plan = await planOrderPayment(order.data.id, body);
-          console.log('plan', plan);
-          setPurchased(true);
-          toast.success('Payment successful');
-        }
+      if (paidCrypto?.data && order?.data) {
+        const body: PlanOrderPaymentBodyModel = {
+          num_crypto_currency: 2,
+          crypto_currency_id: paidCrypto?.crypto?.id ?? '',
+          transaction_hash: paidCrypto?.data ?? '0x',
+          volume: 1
+        };
+        const planOrder = await planOrderPayment(order.data.id, body);
+        console.log('planOrder', planOrder);
+        setPurchased(true);
+        toast.success('Payment successful');
       }
     } catch (err) {
-      setOrderStatus(OrderStatus.Ordering);
+      setOrderStatus(OrderStatus.Processing);
       toast.error('Payment unsuccessful');
       console.log(err);
     } finally {
@@ -103,137 +102,139 @@ const Active = ({ setReloadHistory }: { setReloadHistory: any }) => {
     }
   };
 
-  const renderPlans = () => {
-    return plans.map((plan, index) => (
-      <Box
-        key={index}
-        sx={{
-          ...styleActive,
-          ...(plan.name === 'Pro' ? { borderColor: 'green' } : {})
-        }}
-      >
-        <Typography
-          sx={{
-            fontSize: '20px',
-            fontWeight: 'bold',
-            color: plan.name === 'Pro' ? 'green' : 'inherit'
-          }}
-        >
-          {plan.name}
-        </Typography>
-        <Box
-          sx={{
-            paddingBottom: '17px',
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center'
-          }}
-        >
-          <Box>
-            <Typography
-              sx={{ display: 'flex', alignItems: 'center', gap: '10px' }}
-            >
-              <AttachMoneyIcon
-                sx={{
-                  backgroundColor: '#0B60B0',
-                  width: '25px',
-                  height: '25px',
-                  borderRadius: '50%',
-                  color: '#fff'
-                }}
-              />
-              {plan.price !== null ? `${plan.price} USDT` : '0 USDT'}{' '}
-              <span style={{ color: '#9b9a9a' }}>/per month</span>
-            </Typography>
-          </Box>
-          {plan.name !== 'Standard' ? (
-            <Box sx={{ display: 'flex', gap: '10px' }}>
-              {purchased ? (
-                <Button
-                  variant="contained"
-                  onClick={handlePurchase}
-                  disabled={isConfirming}
-                  sx={{
-                    backgroundColor: '#9BCF53',
-                    '&:hover': { backgroundColor: '#BFEA7C' },
-                    borderRadius: '20px'
-                  }}
-                >
-                  Renew Plan
-                </Button>
-              ) : (
-                <Button
-                  variant="contained"
-                  onClick={handlePurchase}
-                  disabled={isConfirming}
-                  sx={{
-                    backgroundColor: '#9BCF53',
-                    '&:hover': { backgroundColor: '#BFEA7C' },
-                    borderRadius: '20px'
-                  }}
-                >
-                  {isConfirming ? 'Confirming...' : 'Purchase Plan'}
-                </Button>
-              )}
-            </Box>
-          ) : null}
-        </Box>
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '10px',
-            paddingTop: '10px',
-            paddingBottom: '20px',
-            borderTop: `1px solid ${plan.name === 'Pro' ? 'green' : '#383838'}`
-          }}
-        >
-          <Typography sx={{ fontWeight: '500' }}>
-            Description: {plan.description !== null ? plan.description : 'null'}
-          </Typography>
-          <Typography sx={{ fontWeight: '500' }}>
-            Expiry:{' '}
-            <span style={{ fontWeight: '400' }}>
-              {plan.used_in !== null ? plan.used_in : 'Not available'} days
-            </span>
-          </Typography>
-          <Typography sx={{ fontWeight: '500' }}>
-            Number Of Tokens:{' '}
-            <span style={{ fontWeight: '400' }}>
-              {plan.numWord !== null ? plan.numWord : '0'}
-            </span>
-          </Typography>
-          <Typography sx={{ fontWeight: '500' }}>
-            Number Of Tokens Bonus:{' '}
-            <span style={{ fontWeight: '400' }}>
-              {plan.numWordBonus !== null ? plan.numWordBonus : '0'}
-            </span>
-          </Typography>
-          {/* {plan.name !== 'Standard' ? (
-            <>
-              <Typography sx={{ fontWeight: "500" }}>
-                Order Status: {orderStatus}
-                {purchased ? (
-                  <Typography sx={{ color: orderStatus === OrderStatus.Processing ? "green" : "red" }}>
-                    {orderStatus === OrderStatus.Processing ? "Active" : "Inactive"}
-                  </Typography>
-                ) : null}
-              </Typography>
-            </>
-          ) : null} */}
-          {plan.name === 'Standard' ? (
-            <Alert severity="info">
-              If you are on the standard version, buy the Pro version for a
-              better experience
-            </Alert>
-          ) : null}
-        </Box>
-      </Box>
-    ));
-  };
 
-  return <div>{renderPlans()}</div>;
-};
+  const renderPlans = () => {
+    return (
+      <Box sx={{
+        display: "flex", gap: "20px", alignItems: "center",
+        '@media (max-width: 768px)': {
+          display: "flex",
+          paddingTop: "200px",
+          flexDirection: "column",
+        }
+      }}>
+        {plans.map((plan, index) => (
+          <Box
+            key={index}
+            sx={{
+              ...styleActive,
+              ...(plan.name === 'Pro' || plan.name === 'Standard'
+                ? { borderColor: plan.can_register ? 'green' : 'red' }
+                : {})
+            }}
+          >
+            <Typography
+              sx={{
+                fontSize: '20px',
+                fontWeight: 'bold',
+                color: plan.name === 'Pro' || plan.name === 'Standard' ? (plan.can_register ? 'green' : 'red') : 'inherit'
+              }}
+            >
+              {plan.name}
+            </Typography>
+            <Box
+              sx={{
+                paddingBottom: '17px',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center'
+              }}
+            >
+              <Box>
+                <Typography
+                  sx={{ display: 'flex', alignItems: 'center', gap: '10px' }}
+                >
+                  <AttachMoneyIcon
+                    sx={{
+                      backgroundColor: '#0B60B0',
+                      width: '25px',
+                      height: '25px',
+                      borderRadius: '50%',
+                      color: '#fff'
+                    }}
+                  />
+                  {plan.price !== null ? `${plan.price} USDT` : '0 USDT'}{' '}
+                  <span style={{ color: '#9b9a9a' }}>/per month</span>
+                </Typography>
+              </Box>
+              {plan.can_register ? (
+                <Box sx={{ display: 'flex', gap: '10px' }}>
+                  {purchased ? (
+                    <Button
+                      variant="contained"
+                      onClick={() => handlePurchase(plan)}
+                      disabled={isConfirming}
+                      sx={{
+                        backgroundColor: '#9BCF53',
+                        '&:hover': { backgroundColor: '#BFEA7C' },
+                        borderRadius: '20px'
+                      }}
+                    >
+                      Renew Plan
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="contained"
+                      onClick={() => handlePurchase(plan)}
+                      disabled={isConfirming}
+                      sx={{
+                        backgroundColor: '#9BCF53',
+                        '&:hover': { backgroundColor: '#BFEA7C' },
+                        borderRadius: '20px'
+                      }}
+                    >
+                      {isConfirming ? 'Confirming...' : 'Purchase Plan'}
+                    </Button>
+                  )}
+                </Box>
+              ) : null}
+            </Box>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '10px',
+                paddingTop: '10px',
+                paddingBottom: '20px',
+                borderTop: `1px solid ${plan.name === 'Pro' || plan.name === 'Standard' ? (plan.can_register ? 'green' : 'red') : '#383838'}`
+              }}
+            >
+              <Typography sx={{ fontWeight: '500' }}>
+                Description: {plan.description !== null ? plan.description : 'null'}
+              </Typography>
+              <Typography sx={{ fontWeight: '500' }}>
+                Expiry:{' '}
+                <span style={{ fontWeight: '400' }}>
+                  {plan.used_in !== null ? plan.used_in : 'Not available'} days
+                </span>
+              </Typography>
+              <Typography sx={{ fontWeight: '500' }}>
+                Number Of Tokens:{' '}
+                <span style={{ fontWeight: '400' }}>
+                  {plan.numWord !== null ? plan.numWord : '0'}
+                </span>
+              </Typography>
+              <Typography sx={{ fontWeight: '500' }}>
+                Number Of Tokens Bonus:{' '}
+                <span style={{ fontWeight: '400' }}>
+                  {plan.numWordBonus !== null ? plan.numWordBonus : '0'}
+                </span>
+              </Typography>
+              {/* {plan.name === 'Free Trial' ? (
+                <Alert severity="info">
+                  If you are on the Free Trial version, buy the Standard or Pro version for a
+                  better experience
+                </Alert>
+              ) : null} */}
+            </Box>
+          </Box>
+        ))}
+      </Box>
+    )
+  }
+
+  return <div>{renderPlans()}</div>
+}
 
 const styleActive = {
   border: '1px solid #383838',
@@ -247,4 +248,3 @@ const styleActive = {
 };
 
 export { Active };
-

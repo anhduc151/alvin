@@ -40,7 +40,7 @@ const Payment: React.FC = () => {
   const renderSubscriptionMessage = () => {
     if (!planData) return null;
 
-    if (planData.plan.name === 'Standard') {
+    if (planData.plan.name === 'Free Trial') {
       return (
         <Typography sx={{ fontWeight: "700", fontFamily: "PT Sans" }}>
           Please upgrade to Pro version
@@ -49,7 +49,7 @@ const Payment: React.FC = () => {
     } else {
       return (
         <Typography sx={{ fontWeight: "700", fontFamily: "PT Sans" }}>
-          Plan Pro of you Expires on date {new Date(planData.end_date).toLocaleDateString()}
+          Plan Standard of you Expires on date {new Date(planData.end_date).toLocaleDateString()}
         </Typography>
       );
     }
@@ -62,7 +62,7 @@ const Payment: React.FC = () => {
           {renderSubscriptionMessage()}
         </Box>
         <Box sx={{
-          width: "100%", color: "text.primary", padding: "20px", overflow: "auto", display: "flex", justifyContent: "center", gap: "20px", alignItem: "center",
+          width: "100%", color: "text.primary", padding: "20px", overflow: "auto", display: "flex", flexDirection: "column", justifyContent: "center", gap: "20px", alignItem: "center",
           '@media (max-width: 768px)': {
             width: '100vw',
             height: '100%',
@@ -71,22 +71,23 @@ const Payment: React.FC = () => {
             justifyContent: 'center',
           }
         }}>
-          <Box sx={{
-            '@media (max-width: 768px)': {
-              paddingTop: "540px",
-            }
-          }}>
-            <Typography sx={{ fontWeight: "700", paddingBottom: "12px" }}>
+          <Box>
+            <Typography sx={{
+              paddingTop: "550px", fontWeight: "700", paddingBottom: "12px",
+              '@media (max-width: 768px)': {
+                paddingTop: "540px",
+              }
+            }}>
               Active Subscription
             </Typography>
 
-            <Active setReloadHistory={setReloadHistory}/>
+            <Active setReloadHistory={setReloadHistory} />
 
             <Typography sx={{ fontWeight: "700", paddingBottom: "12px" }}>
               Payment History
             </Typography>
 
-            <History reload={reloadHistory}/>
+            <History reload={reloadHistory} />
           </Box>
 
           <Box sx={{ width: "100%" }}>
