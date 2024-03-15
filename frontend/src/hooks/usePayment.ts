@@ -14,10 +14,21 @@ import { useCryptoCurrency } from './useCryptoCurrency';
 export function usePayment() {
   const { getCrypto } = useCryptoCurrency();
   const currentChainId = useChainId();
-  const { connect, connectors } = useConnect();
+  const { connectAsync, connectors } = useConnect();
   const { isConnected } = useAccount();
   const { switchChainAsync } = useSwitchChain();
   const { error, writeContractAsync } = useWriteContract();
+
+const checkConnect = async (chainId?: number) => {
+  if (!isConnected) {
+    const connected = await connectAsync({
+      connector: connectors[0],
+      chainId: chainId ?? mainnet.id
+    });
+    return connected !== undefined
+  }
+  return true;
+}
 
   const checkChain = async (chainId?: number) => {
     let isCorrectChain = true;
@@ -35,27 +46,22 @@ export function usePayment() {
 
   const paymentCrypto = async (price: number) => {
     if (price <= 0) return;
-    const {results: tokens} = await getCrypto();
+    const { results: tokens } = await getCrypto();
     if (!tokens || tokens.length === 0) return;
-    if (isConnected) {
-      const isCorrectChain = checkChain(tokens[0].chain); //TODO: getBalance before get crypto
-      if (!isCorrectChain) return;
-      const hash = await writeContractAsync({        
-        address: tokens[0].contract_address ?? '0x',
-        functionName: 'transfer',
-        abi: erc20Abi,
-        args: [
-          import.meta.env.VITE_OWNER_ADDRESS_WALLET,
-          BigInt((price / 10000) * 10 ** (tokens[0].decimal ?? 0)) //TODO: remove exchange rate test
-        ]
-      });
-      return { crypto: tokens[0], hash };
-    } else {
-      connect({
-        connector: connectors[0],
-        chainId: tokens[0].chain ?? mainnet.id
-      });
-    }
+    const isConnect = await checkConnect(tokens[0].chain)
+    if (!isConnect) return;
+    const isCorrectChain = await checkChain(tokens[0].chain); //TODO: getBalance before get crypto
+    if (!isCorrectChain) return;
+    const hash = await writeContractAsync({
+      address: tokens[0].contract_address ?? '0x',
+      functionName: 'transfer',
+      abi: erc20Abi,
+      args: [
+        import.meta.env.VITE_OWNER_ADDRESS_WALLET,
+        BigInt((price / 10000) * 10 ** (tokens[0].decimal ?? 0)) //TODO: remove exchange rate test
+      ]
+    });
+    return { crypto: tokens[0], hash };
   };
 
   // const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({
