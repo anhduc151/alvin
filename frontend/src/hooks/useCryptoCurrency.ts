@@ -1,11 +1,10 @@
-import { getFetch } from 'helpers/helpers';
+import { fetchGet } from 'helpers/helpers';
 import { CryptoCurrencyModel } from 'models/CryptoCurrencyModel';
 
 export function useCryptoCurrency() {
   const getCrypto = async () => {
-    const response = await getFetch(
-      `v1/api/admin/crypto-currency?page=1&page_size=100`,
-      'GET'
+    const response = await fetchGet(
+      `v1/api/admin/crypto-currency?page=1&page_size=100`
     );
 
     if (!response?.ok) {

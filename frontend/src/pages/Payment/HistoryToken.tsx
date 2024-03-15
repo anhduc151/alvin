@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
 import { Box, Chip } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import CopyButton from 'components/atoms/buttons/CoppyButton';
+import React, { useEffect, useState } from 'react';
 
-const HistoryToken: React.FC = () => {
+const HistoryToken = ({ reload }: { reload: boolean }) => {
     const [orders, setOrders] = useState<any[]>([]);
 
     useEffect(() => {
@@ -32,7 +32,7 @@ const HistoryToken: React.FC = () => {
                     console.error('Error fetching orders:', error);
                 });
         }
-    }, []);
+    }, [reload]);
 
 
     const getStatusChip = (status: string) => {
@@ -88,3 +88,4 @@ const HistoryToken: React.FC = () => {
 };
 
 export { HistoryToken };
+

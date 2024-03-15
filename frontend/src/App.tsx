@@ -3,6 +3,7 @@ import { useAuth } from 'api/auth';
 import { configWagmi } from 'configs/wagmi';
 import { useEffect } from 'react';
 import { RouterProvider } from 'react-router-dom';
+import { ToastContainer, Zoom } from 'react-toastify';
 import { useRecoilValue } from 'recoil';
 import { router } from 'router';
 import { Toaster } from 'sonner';
@@ -18,8 +19,6 @@ import Hotkeys from 'components/Hotkeys';
 import SettingsModal from 'components/molecules/settingsModal';
 import ChatSettingsModal from 'components/organisms/chat/settings';
 import PromptPlayground from 'components/organisms/playground';
-
-import { ToastContainer } from 'react-toastify';
 
 import { apiClientState } from 'state/apiClient';
 import { projectSettingsState } from 'state/project';
@@ -144,7 +143,7 @@ function App() {
             <Hotkeys />
             <SettingsModal />
             <RouterProvider router={router} />
-            <ToastContainer />
+            <ToastContainer position="bottom-right" theme="colored" transition={Zoom}/>
           </Box>
         </QueryClientProvider>
       </WagmiProvider>

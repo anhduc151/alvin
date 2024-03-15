@@ -1,16 +1,37 @@
-const getFetch = (url: string, method: string, body?: object, contentType?: string) => {
+const getTokenGG = () => {
   const tokenGG = localStorage.getItem('token_gg');
+  if (!tokenGG) {
+    console.error('No Google token found.');
+    return;
+  }
+  return tokenGG;
+};
+
+const fetchGet = (url: string) => {
+  const tokenGG = getTokenGG();
   if (tokenGG) {
     return fetch(`${import.meta.env.VITE_DEVSERVER_URL}/${url}`, {
-      method,
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${tokenGG}`
+      }
+    });
+  }
+};
+
+const fetchPost = (url: string, body?: object) => {
+  const tokenGG = getTokenGG();
+  if (tokenGG) {
+    return fetch(`${import.meta.env.VITE_DEVSERVER_URL}/${url}`, {
+      method: 'POST',
       headers: {
         Authorization: `Bearer ${tokenGG}`,
-        "Content-Type": contentType ?? "application/json",
+        'Content-Type': 'application/json'
       },
       body: body ? JSON.stringify(body) : undefined
     });
   }
 };
 
-export { getFetch };
+export { fetchGet, fetchPost, getTokenGG };
 

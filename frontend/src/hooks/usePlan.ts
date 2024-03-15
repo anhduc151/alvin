@@ -1,31 +1,28 @@
-import { getFetch } from 'helpers/helpers';
-import { OrderModel } from 'models/OrderModel';
-import { PlanOrderPaymentBodyModel } from 'models/PlanModel';
+import { fetchPost } from 'helpers/helpers';
+import {
+  PlanOrderModel,
+  PlanOrderPaymentBodyModel
+} from 'models/UserPlanModel';
 
 export function usePlan() {
   const orderPlan = async (planId: string, volume: number) => {
     const body = { volume };
-    const response = await getFetch(
-      `v1/api/user/plans/${planId}/order`,
-      'POST',
-      body
-    );
-  
+    const response = await fetchPost(`v1/api/user/plans/${planId}/order`, body);
+
     if (!response?.ok) {
       console.log('ERROR: ', response);
       throw new Error('Failed to purchase plan');
     }
-  
-    return response.json() as Promise<{ data: OrderModel }>;
+
+    return response.json() as Promise<{ data: PlanOrderModel }>;
   };
 
-  const planOrderPayment = async (
-    order_id: string,
+  const paymentPlan = async (
+    orderId: string,
     body: PlanOrderPaymentBodyModel
   ) => {
-    const response = await getFetch(
-      `v1/api/user/my-plan-order/${order_id}/payment`,
-      'POST',
+    const response = await fetchPost(
+      `v1/api/user/my-plan-order/${orderId}/payment`,
       body
     );
 
@@ -39,6 +36,6 @@ export function usePlan() {
 
   return {
     orderPlan,
-    planOrderPayment
+    paymentPlan
   };
 }

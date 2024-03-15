@@ -1,9 +1,10 @@
 import { erc20Abi } from 'viem';
 import {
   useAccount,
+  useChainId,
   useConnect,
   useReadContract,
-  useWaitForTransactionReceipt,
+  useSwitchChain,
   useWriteContract
 } from 'wagmi';
 import { bscTestnet, mainnet } from 'wagmi/chains';
@@ -12,33 +13,48 @@ import { useCryptoCurrency } from './useCryptoCurrency';
 
 export function usePayment() {
   const { getCrypto } = useCryptoCurrency();
+  const currentChainId = useChainId();
   const { connect, connectors } = useConnect();
   const { isConnected } = useAccount();
-  const account = useAccount();
-  ``;
-  const { data: hash, error, writeContractAsync } = useWriteContract();
+  const { switchChainAsync } = useSwitchChain();
+  const { error, writeContractAsync } = useWriteContract();
 
-  const payment = async (price: number) => {
-    const resCrypto = await getCrypto();
-    const cryptoCurrencies = resCrypto.results;
-    if (!cryptoCurrencies) return;
+  const checkChain = async (chainId?: number) => {
+    let isCorrectChain = true;
+    if (currentChainId !== chainId) {
+      const { id } = await switchChainAsync({
+        chainId: chainId ?? mainnet.id
+      });
+      isCorrectChain = id === (chainId ?? mainnet.id);
+    }
+    if (!isCorrectChain) {
+      console.log('ERROR: chain is not correct!');
+    }
+    return isCorrectChain;
+  };
+
+  const paymentCrypto = async (price: number) => {
+    if (price <= 0) return;
+    const {results: tokens} = await getCrypto();
+    if (!tokens || tokens.length === 0) return;
     if (isConnected) {
-      console.log('account', account);
-      console.log('cryptoCurrencies: ', cryptoCurrencies);
-      const data = await writeContractAsync({
-        chainId: cryptoCurrencies[0].chain_id ?? bscTestnet.id,
-        address: cryptoCurrencies[0].contract_address, // change to receipient address
+      const isCorrectChain = checkChain(tokens[0].chain); //TODO: getBalance before get crypto
+      if (!isCorrectChain) return;
+      const hash = await writeContractAsync({        
+        address: tokens[0].contract_address ?? '0x',
         functionName: 'transfer',
         abi: erc20Abi,
         args: [
           import.meta.env.VITE_OWNER_ADDRESS_WALLET,
-          BigInt((price / 10000) * 10 ** cryptoCurrencies[0].decimal)
+          BigInt((price / 10000) * 10 ** (tokens[0].decimal ?? 0)) //TODO: remove exchange rate test
         ]
       });
-      console.log('writeContract', data);
-      return { crypto: cryptoCurrencies[0], data };
+      return { crypto: tokens[0], hash };
     } else {
-      connect({ connector: connectors[0], chainId: bscTestnet.id });
+      connect({
+        connector: connectors[0],
+        chainId: tokens[0].chain ?? mainnet.id
+      });
     }
   };
 
@@ -58,10 +74,9 @@ export function usePayment() {
   };
 
   return {
-    payment,
-    // balance,
-    hash,
-    error,
+    paymentCrypto,
+    balance,
+    error
     // isConfirming,
     // isSuccess
   };

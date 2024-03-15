@@ -1,13 +1,11 @@
-import { AddressCrypto, SystemModel } from './SystemModel';
+import { AddressCrypto } from './CommonModels';
 
-export type CryptoCurrencyModel = SystemModel & {
+export type CryptoCurrencyModel = {
   id: string;
-  name: string;
-  description: string;
-  active: boolean;
-  symbol: string;
-  contract_address: AddressCrypto;
-  decimal: number;
-  chain: string;
-  chain_id: number;
+  name?: string;
+  description?: string;
+  symbol?: string;
+  contract_address?: AddressCrypto;
+  decimal?: number;
+  chain?: number;
 };

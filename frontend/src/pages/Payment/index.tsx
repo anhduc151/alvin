@@ -10,6 +10,7 @@ const Payment: React.FC = () => {
   const [planData, setPlanData] = useState<any>(null);
   const [reloadHistory, setReloadHistory] = useState(false);
   const [selectedTab, setSelectedTab] = useState("active");
+  const [reloadUsage, setReloadUsage] = useState(false);
 
   useEffect(() => {
     const tokenGG = localStorage.getItem('token_gg');
@@ -100,19 +101,17 @@ const Payment: React.FC = () => {
                   Usage Limit
                 </Typography>
 
-                <Usage />
+                <Usage value={0} setReloadUsage={setReloadUsage}/>
 
                 <Box sx={{ width: "100%" }}>
                   <Typography sx={{ fontWeight: "700", paddingBottom: "12px", paddingTop: "20px" }}>
                     Token Purchase History
                   </Typography>
-                  <HistoryToken />
+                  <HistoryToken reload={reloadUsage}/>
                 </Box>
               </>
             )}
           </Box>
-
-
         </Box>
       </Box>
     </Page>
