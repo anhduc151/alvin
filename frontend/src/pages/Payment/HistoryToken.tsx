@@ -67,12 +67,22 @@ const HistoryToken: React.FC = () => {
 
     return (
         <Box>
-            <DataGrid rows={orders} columns={columns} pagination sx={{
-                borderRadius: "20px", border: "1px solid #383838",
-                '@media (max-width: 768px)': {
-                    width: '100%',
-                }
-            }} />
+            <DataGrid
+                rows={orders}
+                columns={columns}
+                initialState={{
+                    pagination: {
+                        paginationModel: {
+                            pageSize: 5,
+                        },
+                    },
+                }}
+                pageSizeOptions={[5]} pagination sx={{
+                    borderRadius: "20px", border: "1px solid #383838",
+                    '@media (max-width: 768px)': {
+                        width: '100%',
+                    }
+                }} />
         </Box>
     );
 };

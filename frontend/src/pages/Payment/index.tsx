@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Tab, Tabs, Typography } from "@mui/material";
 import Page from "pages/Page";
 import React, { useEffect, useState } from "react";
 import { Active } from "./Active";
@@ -9,6 +9,7 @@ import { Usage } from "./Usage";
 const Payment: React.FC = () => {
   const [planData, setPlanData] = useState<any>(null);
   const [reloadHistory, setReloadHistory] = useState(false);
+  const [selectedTab, setSelectedTab] = useState("active");
 
   useEffect(() => {
     const tokenGG = localStorage.getItem('token_gg');
@@ -33,9 +34,11 @@ const Payment: React.FC = () => {
       };
       fetchPlan();
     }
-
   }, []);
 
+  const handleTabChange = (event: React.SyntheticEvent, newValue: string) => {
+    setSelectedTab(newValue);
+  };
 
   const renderSubscriptionMessage = () => {
     if (!planData) return null;
@@ -49,7 +52,7 @@ const Payment: React.FC = () => {
     } else {
       return (
         <Typography sx={{ fontWeight: "700", fontFamily: "PT Sans" }}>
-          Plan Standard of you Expires on date {new Date(planData.end_date).toLocaleDateString()}
+          Expired: {new Date(planData.end_date).toLocaleDateString()}
         </Typography>
       );
     }
@@ -57,52 +60,59 @@ const Payment: React.FC = () => {
 
   return (
     <Page>
-      <Box sx={{ width: "100%", color: "text.primary", overflow: "auto", display: "flex", flexDirection: "column", justifyContent: "center", alignItem: "center" }}>
-        <Box sx={{ backgroundColor: "#43e661", color: "#000", display: "flex", justifyContent: "center", alignItems: "center", height: "54px" }}>
+      <Box sx={{ width: "100%", color: "text.primary", display: "flex", flexDirection: "column", alignItems: "center" }}>
+        <Box sx={{ backgroundColor: "#43e661", color: "#000", display: "flex", justifyContent: "center", alignItems: "center", width: "100%", height: "30px" }}>
           {renderSubscriptionMessage()}
         </Box>
         <Box sx={{
-          width: "100%", color: "text.primary", padding: "20px", overflow: "auto", display: "flex", flexDirection: "column", justifyContent: "center", gap: "20px", alignItem: "center",
+          width: "100%", color: "text.primary", padding: "20px", overflow: "auto", display: "flex", flexDirection: "column", gap: "20px",
           '@media (max-width: 768px)': {
             width: '100vw',
             height: '100%',
             display: 'flex',
             flexDirection: 'column',
-            justifyContent: 'center',
           }
         }}>
+          <Tabs value={selectedTab} onChange={handleTabChange}>
+            <Tab value="active" label="Subscription" />
+            <Tab value="usage" label="Usage Limit" />
+          </Tabs>
           <Box>
-            <Typography sx={{
-              paddingTop: "550px", fontWeight: "700", paddingBottom: "12px",
-              '@media (max-width: 768px)': {
-                paddingTop: "540px",
-              }
-            }}>
-              Active Subscription
-            </Typography>
+            {selectedTab === "active" && (
+              <>
+                <Typography sx={{ fontWeight: "700", paddingBottom: "12px" }}>
+                  Active Subscription
+                </Typography>
 
-            <Active setReloadHistory={setReloadHistory} />
+                <Active setReloadHistory={setReloadHistory} />
 
-            <Typography sx={{ fontWeight: "700", paddingBottom: "12px" }}>
-              Payment History
-            </Typography>
+                <Typography sx={{ fontWeight: "700", paddingBottom: "12px" }}>
+                  Payment History
+                </Typography>
 
-            <History reload={reloadHistory} />
+                <History reload={reloadHistory} />
+              </>
+            )}
+
+            {selectedTab === "usage" && (
+              <>
+                <Typography sx={{ fontWeight: "700", paddingBottom: "12px" }}>
+                  Usage Limit
+                </Typography>
+
+                <Usage />
+
+                <Box sx={{ width: "100%" }}>
+                  <Typography sx={{ fontWeight: "700", paddingBottom: "12px", paddingTop: "20px" }}>
+                    Token Purchase History
+                  </Typography>
+                  <HistoryToken />
+                </Box>
+              </>
+            )}
           </Box>
 
-          <Box sx={{ width: "100%" }}>
-            <Typography sx={{ fontWeight: "700", paddingBottom: "12px" }}>
-              Usage Limit
-            </Typography>
 
-            <Usage />
-
-            <Typography sx={{ fontWeight: "700", paddingBottom: "12px", paddingTop: "20px" }}>
-              Token Purchase History
-            </Typography>
-
-            <HistoryToken />
-          </Box>
         </Box>
       </Box>
     </Page>

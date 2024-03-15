@@ -1,16 +1,16 @@
 import { useAuth } from 'api/auth';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
-import { Box, Button, Stack, Typography } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 
-import { AuthLogin } from '@chainlit/react-components';
+// import { AuthLogin } from '@chainlit/react-components';
 
 import { Logo } from 'components/atoms/logo';
 
 import google from '../assets/google.png';
-import abc from '../assets/public.png';
+import abc from '../assets/crypto.png';
 import twitter from '../assets/twitter.png';
 
 // import { Logo } from 'components/atoms/logo';
@@ -87,69 +87,40 @@ export default function Login() {
       <Link to="/" className="login_name decoration" style={{ zIndex: 100 }}>
         <Logo
           style={{
-            width: '30px',
-            height: '30px',
+            width: '38px',
+            height: '38px',
             borderRadius: '50%',
-            border: '1px solid #000'
           }}
         />
 
         <Typography
           sx={{
-            // color: "text.primary",
             color: '#fff',
             fontWeight: '700',
-            fontSize: '17px'
+            fontSize: '20px'
           }}
         >
           Alvin AI
         </Typography>
       </Link>
 
-      <Box
-        sx={{
-          backgroundColor: '#000',
-          width: '100vw',
-          height: '100vh',
-          display: 'flex',
-          alignItems: 'center',
-          '@media (max-width: 768px)': {
-            width: '100vw',
-            height: '100vh',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }
-        }}
-      >
+      <div className='login_box'>
         <Box
           sx={{
-            position: 'relative',
-            height: '100%',
-            '@media (max-width: 768px)': {
-              display: 'none'
-            }
-          }}
-        >
-          <div className="login_left">
-            <img src={abc} alt="" className="login_left_imgs" />
-          </div>
-        </Box>
-
-        <Box
-          sx={{
-            backgroundColor: '#000',
-            border: '1px solid #424242',
             padding: '2rem',
             borderRadius: '20px',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'center',
-            alignItems: 'center',
-            gap: '20px'
+            gap: '20px',
+            '@media (max-width: 768px)': {
+              padding: "3rem"
+            }
           }}
         >
-          <h1 className="login_h1">Sign In</h1>
+
+
+          <h1 className="login_h1">Do <br />Your <br /> Own <br /> Research</h1>
 
           <Box className="sign_in_google" onClick={handleGoogleSignIn}>
             <img src={google} alt="" className="sign_in_google_imgs" />
@@ -157,9 +128,9 @@ export default function Login() {
             <Typography
               sx={{
                 // color: "text.primary",
-                color: '#fff',
+                color: '#000',
                 padding: '10px 20px',
-                fontWeight: '400',
+                fontWeight: '700',
                 fontSize: '17px'
               }}
             >
@@ -167,7 +138,7 @@ export default function Login() {
             </Typography>
           </Box>
 
-          <div className="sign_in_or">
+          {/* <div className="sign_in_or">
             <Typography
               className="or"
               sx={{
@@ -186,17 +157,17 @@ export default function Login() {
             <Typography
               sx={{
                 // color: "text.primary",
-                color: '#fff',
+                color: '#000',
                 padding: '10px 20px',
-                fontWeight: '400',
+                fontWeight: '700',
                 fontSize: '17px'
               }}
             >
               Sign in with Twitter
             </Typography>
-          </Box>
+          </Box> */}
         </Box>
-      </Box>
+      </div>
 
       {/* <AuthLogin
           title="Sign In"

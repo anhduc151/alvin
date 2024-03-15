@@ -26,20 +26,21 @@ const Page = ({ children }: Props) => {
     }
   }
 
-  // if (!isAuthenticated) {
-  //   return <Navigate to="/login" />;
-  // }
+  if (!isAuthenticated) {
+    return <Navigate to="/login" />;
+  }
 
   return (
     <Box
       sx={{
         display: 'flex',
         flexDirection: 'column',
-        width: '100%'
+        width: '100%',
+        height: '100%'
       }}
     >
       <Header projectSettings={projectSettings} />
-      {/* {!isAuthenticated ? (
+      {!isAuthenticated ? (
         <Alert severity="error">
           <Translator path="pages.Page.notPartOfProject" />
         </Alert>
@@ -48,12 +49,12 @@ const Page = ({ children }: Props) => {
           <ThreadHistorySideBar />
           {children}
         </Stack>
-      )} */}
+      )}
 
-      <Stack direction="row" height="100%" width="100%" overflow="auto">
+      {/* <Stack direction="row" height="100%" width="100%" overflow="auto">
         <ThreadHistorySideBar />
         {children}
-      </Stack>
+      </Stack> */}
     </Box>
   );
 };

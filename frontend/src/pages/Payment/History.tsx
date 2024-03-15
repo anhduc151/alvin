@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Chip, Button, IconButton } from '@mui/material';
+import { Box, Chip, IconButton } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import CopyButton from 'components/atoms/buttons/CoppyButton';
 import CancelIcon from '@mui/icons-material/Cancel';
@@ -93,14 +93,14 @@ const History = ({ reload }: { reload: boolean }) => {
     }
     return '';
   };
-  
+
   const columns: GridColDef[] = [
     { field: 'paid_at', headerName: 'Date', width: 200 },
     { field: 'name', headerName: 'Plan', width: 200 },
     { field: 'current_price', headerName: 'Unit Price', width: 200, renderCell: (params) => formatPriceWithCurrency(params.value) },
     { field: 'volume', headerName: 'Volume', width: 200 },
-    { field: 'price', headerName: 'Amount', width: 200, renderCell: (params) => formatPriceWithCurrency(params.value) },
     { field: 'price_discount_percent', headerName: 'Price Discount (%)', width: 200 },
+    { field: 'price', headerName: 'Amount', width: 200, renderCell: (params) => formatPriceWithCurrency(params.value) },
     { field: 'status', headerName: 'Status', width: 200, renderCell: (params) => getStatusChip(params.value) },
     {
       field: 'transaction_hash',
@@ -133,6 +133,14 @@ const History = ({ reload }: { reload: boolean }) => {
         rows={orders}
         columns={columns}
         pagination
+        initialState={{
+          pagination: {
+            paginationModel: {
+              pageSize: 5,
+            },
+          },
+        }}
+        pageSizeOptions={[5]}
         sx={{
           borderRadius: '20px',
           border: '1px solid #383838',

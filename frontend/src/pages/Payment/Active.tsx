@@ -109,7 +109,6 @@ const Active = ({ setReloadHistory }: { setReloadHistory: any }) => {
         display: "flex", gap: "20px", alignItems: "center",
         '@media (max-width: 768px)': {
           display: "flex",
-          paddingTop: "200px",
           flexDirection: "column",
         }
       }}>

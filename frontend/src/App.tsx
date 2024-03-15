@@ -77,7 +77,8 @@ function App() {
   const pSettings = useRecoilValue(projectSettingsState);
   // @ts-expect-error custom property
   const fontFamily = window.theme?.font_family;
-  const theme = overrideTheme(makeTheme(themeVariant, fontFamily));
+  // const theme = overrideTheme(makeTheme(themeVariant, fontFamily));
+  const theme = overrideTheme(makeTheme('dark', fontFamily));
   const { isAuthenticated, accessToken } = useAuth();
   const userEnv = useRecoilValue(userEnvState);
   const { connect, chatProfile, setChatProfile } = useChatSession();
@@ -130,23 +131,23 @@ function App() {
           }
         }}
       />
-        <WagmiProvider config={configWagmi}>
-          <QueryClientProvider client={queryClient}>
-            <Box
-              display="flex"
-              height="100vh"
-              width="100vw"
-              sx={{ overflowX: 'hidden' }}
-            >
-              <PromptPlayground />
-              <ChatSettingsModal />
-              <Hotkeys />
-              <SettingsModal />
-              <RouterProvider router={router} />
-              <ToastContainer />
-            </Box>
-          </QueryClientProvider>
-        </WagmiProvider>
+      <WagmiProvider config={configWagmi}>
+        <QueryClientProvider client={queryClient}>
+          <Box
+            display="flex"
+            height="100vh"
+            width="100vw"
+            sx={{ overflowX: 'hidden' }}
+          >
+            <PromptPlayground />
+            <ChatSettingsModal />
+            <Hotkeys />
+            <SettingsModal />
+            <RouterProvider router={router} />
+            <ToastContainer />
+          </Box>
+        </QueryClientProvider>
+      </WagmiProvider>
     </ThemeProvider>
   );
 }
