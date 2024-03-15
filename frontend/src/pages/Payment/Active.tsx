@@ -61,8 +61,8 @@ const Active = ({ setReloadHistory }: { setReloadHistory: any }) => {
             id: result.id,
             name: result.name,
             price: result.price,
-            numWord: result.num_word,
-            numWordBonus: result.num_word_bonus,
+            numWord: result.num_token,
+            numWordBonus: result.num_token_bonus,
             description: result.description,
             used_in: result.used_in !== null ? result.used_in * 30 : null,
             can_register: result.can_register
@@ -125,7 +125,7 @@ const Active = ({ setReloadHistory }: { setReloadHistory: any }) => {
           sx={{
             ...styleActive,
             ...(plan.name === 'Pro' || plan.name === 'Standard'
-              ? { borderColor: plan.can_register ? 'green' : 'red' }
+              ? { borderColor: plan.can_register ? '#3fd18a' : 'yellow' }
               : {})
           }}
         >
@@ -136,8 +136,8 @@ const Active = ({ setReloadHistory }: { setReloadHistory: any }) => {
               color:
                 plan.name === 'Pro' || plan.name === 'Standard'
                   ? plan.can_register
-                    ? 'green'
-                    : 'red'
+                    ? '#3fd18a'
+                    : 'yellow'
                   : 'inherit'
             }}
           >
@@ -207,7 +207,7 @@ const Active = ({ setReloadHistory }: { setReloadHistory: any }) => {
               gap: '10px',
               paddingTop: '10px',
               paddingBottom: '20px',
-              borderTop: `1px solid ${plan.name === 'Pro' || plan.name === 'Standard' ? (plan.can_register ? 'green' : 'red') : '#383838'}`
+              borderTop: `1px solid ${plan.name === 'Pro' || plan.name === 'Standard' ? (plan.can_register ? '#3fd18a' : 'yellow') : '#383838'}`
             }}
           >
             <Typography sx={{ fontWeight: '500' }}>

@@ -27,8 +27,8 @@ export function useTokenOrder() {
   //   .catch(error => {
   //     console.error('Error purchasing tokens:', error);
   //   });
-  const orderToken = async (tokenAmount: number) => {
-    const body = { tokenAmount };
+  const orderToken = async (price: number) => {
+    const body = { price };
     const response = await fetchPost(`v1/api/user/my-token-order`, body);
 
     if (!response?.ok) {

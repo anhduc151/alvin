@@ -33,7 +33,7 @@ export default function NewChatButton() {
         variant="outlined"
         onClick={handleClickOpen}
         startIcon={<SquarePenIcon />}
-        sx={{ border: "1px solid #1bc740", color: "#1bc740"}}
+        sx={{ border: "2px solid #3FD18A", color: "#3FD18A"}}
       >
         <Translator path="components.molecules.newChatButton.newChat" />
       </AccentButton>

@@ -41,7 +41,7 @@ export default function AppWrapper() {
         .then((response) => {
           localStorage.setItem('token_gg', tokenGG);
           setAccessToken(response?.access_token);
-          window.location.href = '/message';
+          window.location.href = '/payment';
         })
         .catch((error) => {
           console.error('Failed to send access token to header:', error);

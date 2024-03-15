@@ -1,6 +1,6 @@
-import { TokenOrderPaymentBodyModel } from 'models/TokenOrderModel';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
+import { TokenOrderPaymentBodyModel } from 'models/TokenOrderModel';
 
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
@@ -16,6 +16,11 @@ import Typography from '@mui/material/Typography';
 import { usePayment } from 'hooks/usePayment';
 import { useTokenOrder } from 'hooks/useTokenOrder';
 
+interface PriceInfo {
+  price: number;
+  discount: number;
+}
+
 interface IUsage {
   value: number;
   setReloadUsage: any;
@@ -27,8 +32,43 @@ const Usage = ({ value, setReloadUsage }: IUsage) => {
   const [inputValue, setInputValue] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [isProcessing, setIsProcessing] = useState(false);
+  const [suggestedPrices, setSuggestedPrices] = useState<PriceInfo[]>([]);
   const { paymentCrypto } = usePayment();
   const { orderToken, paymentToken } = useTokenOrder();
+
+  useEffect(() => {
+    if (openDialog) {
+      fetchSuggestedPrice();
+    }
+  }, [openDialog]);
+
+  const fetchSuggestedPrice = async () => {
+    try {
+      const tokenGG = localStorage.getItem('token_gg');
+      if (!tokenGG) {
+        throw new Error('No token found in local storage');
+      }
+
+      const response = await fetch(`${import.meta.env.VITE_DEVSERVER_URL}/v1/api/user/crypto-currency-price`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${tokenGG}`
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch suggested price');
+      }
+
+      const data = await response.json();
+      setSuggestedPrices(data);
+    } catch (error) {
+      console.error('Error fetching suggested price:', error);
+      setSuggestedPrices([]);
+    }
+  };
+
+
 
   const handleBuyToken = () => {
     setOpenDialog(true);
@@ -37,6 +77,8 @@ const Usage = ({ value, setReloadUsage }: IUsage) => {
   const handleCloseDialog = () => {
     setOpenDialog(false);
     setErrorMessage('');
+    setInputValue('');
+    setSuggestedPrices([]);
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -63,11 +105,11 @@ const Usage = ({ value, setReloadUsage }: IUsage) => {
       setIsProcessing(true);
       setErrorMessage("");
       const { data: ordered } = await orderToken(parseInt(inputValue));
-      const paidCrypto = await paymentCrypto(parseInt(inputValue)); //TODO: waiting exchange rate
+      const paidCrypto = await paymentCrypto(parseInt(inputValue));
 
       if (paidCrypto?.hash && ordered?.id) {
         const body: TokenOrderPaymentBodyModel = {
-          num_crypto_currency: 1, //TODO: waiting exchange rate
+          num_crypto_currency: 1,
           crypto_currency_id: paidCrypto?.crypto?.id ?? '',
           transaction_hash: paidCrypto?.hash ?? '0x'
         };
@@ -84,6 +126,10 @@ const Usage = ({ value, setReloadUsage }: IUsage) => {
       setOpenDialog(false);
       setReloadUsage((prevState: any) => !prevState);
     }
+  };
+
+  const handleSuggestedPriceClick = (price: number) => {
+    setInputValue(String(price));
   };
 
   return (
@@ -138,6 +184,16 @@ const Usage = ({ value, setReloadUsage }: IUsage) => {
               sx={{ mb: 2 }}
             />
 
+            {suggestedPrices.map((priceInfo, index) => (
+              <Typography
+                key={index}
+                variant="body1"
+                onClick={() => handleSuggestedPriceClick(priceInfo.price)}
+                style={{ cursor: 'pointer', marginTop: '10px', border: "1px solid #fff", backgroundColor: "#fff", color: "#3fd18a", borderRadius: "5px", textAlign: "center" }}
+              >
+                {priceInfo.price} USDT ({priceInfo.discount}% discount)
+              </Typography>
+            ))}
             {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
           </DialogContent>
           <DialogActions>
@@ -159,4 +215,3 @@ const Usage = ({ value, setReloadUsage }: IUsage) => {
 };
 
 export { Usage };
-

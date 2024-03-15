@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Chip, IconButton } from '@mui/material';
+import { Box, Chip, IconButton, CircularProgress  } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import CopyButton from 'components/atoms/buttons/CoppyButton';
 import CancelIcon from '@mui/icons-material/Cancel';
 
 const History = ({ reload }: { reload: boolean }) => {
   const [orders, setOrders] = useState<any[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const tokenGG = localStorage.getItem('token_gg');
 
     if (tokenGG) {
+      setLoading(true);
       fetch(`${import.meta.env.VITE_DEVSERVER_URL}/v1/api/user/my-plan-order`, {
         method: 'GET',
         headers: {
@@ -31,9 +33,11 @@ const History = ({ reload }: { reload: boolean }) => {
             price_discount_percent: order.plan.price_discount_percent
           }));
           setOrders(extractedOrders);
+          setLoading(false);
         })
         .catch((error) => {
           console.error('Error fetching orders:', error);
+          setLoading(false); 
         });
     }
   }, [reload]);
@@ -129,26 +133,32 @@ const History = ({ reload }: { reload: boolean }) => {
 
   return (
     <Box>
-      <DataGrid
-        rows={orders}
-        columns={columns}
-        pagination
-        initialState={{
-          pagination: {
-            paginationModel: {
-              pageSize: 5,
+      {loading ? ( 
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '300px' }}>
+          <CircularProgress />
+        </Box>
+      ) : (
+        <DataGrid
+          rows={orders}
+          columns={columns}
+          pagination
+          initialState={{
+            pagination: {
+              paginationModel: {
+                pageSize: 5,
+              },
             },
-          },
-        }}
-        pageSizeOptions={[5]}
-        sx={{
-          borderRadius: '20px',
-          border: '1px solid #383838',
-          '@media (max-width: 768px)': {
-            width: '100%'
-          }
-        }}
-      />
+          }}
+          pageSizeOptions={[5]}
+          sx={{
+            borderRadius: '20px',
+            border: '1px solid #383838',
+            '@media (max-width: 768px)': {
+              width: '100%'
+            }
+          }}
+        />
+      )}
     </Box>
   );
 };

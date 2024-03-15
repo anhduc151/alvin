@@ -1,15 +1,18 @@
-import { Box, Chip } from '@mui/material';
+import { Box, Chip, CircularProgress } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import CopyButton from 'components/atoms/buttons/CoppyButton';
 import React, { useEffect, useState } from 'react';
 
 const HistoryToken = ({ reload }: { reload: boolean }) => {
     const [orders, setOrders] = useState<any[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
+
 
     useEffect(() => {
         const tokenGG = localStorage.getItem('token_gg');
 
         if (tokenGG) {
+            setLoading(true);
             fetch(`${import.meta.env.VITE_DEVSERVER_URL}/v1/api/user/my-token-order`, {
                 method: 'GET',
                 headers: {
@@ -20,16 +23,18 @@ const HistoryToken = ({ reload }: { reload: boolean }) => {
                 .then((data) => {
                     const extractedOrders = data.results.map((order: any) => ({
                         id: order.id,
+                        price: order.price || 0,
+                        word: order.system_token || '',
                         status: order.status,
                         paid_at: order.paid_at ? new Date(order.paid_at).toLocaleString() : '',
-                        word: order.word || '',
-                        price: order.price || 0,
                         transaction_hash: order.transaction_hash || ''
                     }));
                     setOrders(extractedOrders);
+                    setLoading(false);
                 })
                 .catch((error) => {
                     console.error('Error fetching orders:', error);
+                    setLoading(false);
                 });
         }
     }, [reload]);
@@ -67,22 +72,30 @@ const HistoryToken = ({ reload }: { reload: boolean }) => {
 
     return (
         <Box>
-            <DataGrid
-                rows={orders}
-                columns={columns}
-                initialState={{
-                    pagination: {
-                        paginationModel: {
-                            pageSize: 5,
+            {loading ? (
+                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '300px' }}>
+                    <CircularProgress />
+                </Box>
+            ) : (
+                <DataGrid
+                    rows={orders}
+                    columns={columns}
+                    initialState={{
+                        pagination: {
+                            paginationModel: {
+                                pageSize: 5,
+                            },
                         },
-                    },
-                }}
-                pageSizeOptions={[5]} pagination sx={{
-                    borderRadius: "20px", border: "1px solid #383838",
-                    '@media (max-width: 768px)': {
-                        width: '100%',
-                    }
-                }} />
+                    }}
+                    pageSizeOptions={[5]}
+                    pagination
+                    sx={{
+                        borderRadius: "20px", border: "1px solid #383838",
+                        '@media (max-width: 768px)': {
+                            width: '100%',
+                        }
+                    }} />
+            )}
         </Box>
     );
 };
