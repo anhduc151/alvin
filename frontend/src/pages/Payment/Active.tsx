@@ -35,7 +35,7 @@ interface Plan {
 const Active = ({ setReloadHistory }: { setReloadHistory: any }) => {
   const [plans, setPlans] = useState<Plan[]>([]);
   const [purchased, setPurchased] = useState(false);
-  const [isProcessing, setIsProcessing] = useState(false);
+  const [isProcessing, setIsProcessing] = useState<{ [key: string]: boolean }>({});
   const [orderStatus, setOrderStatus] = useState(OrderStatus.Processing);
   const { paymentCrypto, error: errPayment } = usePayment();
   const { orderPlan, paymentPlan } = usePlan();
@@ -68,7 +68,13 @@ const Active = ({ setReloadHistory }: { setReloadHistory: any }) => {
             can_register: result.can_register
           }));
 
-          setPlans(convertedPlans);
+          const sortedPlans = convertedPlans.slice().sort((a: Plan, b: Plan) => {
+            const order = ['Free trial', 'Standard', 'Pro'];
+            return order.indexOf(a.name) - order.indexOf(b.name);
+          });
+          
+
+          setPlans(sortedPlans);
         })
         .catch((error) => {
           console.error('Error fetching plans:', error);
@@ -78,7 +84,10 @@ const Active = ({ setReloadHistory }: { setReloadHistory: any }) => {
 
   const handlePurchase = async (plan: Plan) => {
     try {
-      setIsProcessing(true);
+      setIsProcessing(prevState => ({
+        ...prevState,
+        [plan.id]: true
+      }));
       setOrderStatus(OrderStatus.Processing);
 
       const { data: ordered } = await orderPlan(plan.id, 1);
@@ -94,15 +103,22 @@ const Active = ({ setReloadHistory }: { setReloadHistory: any }) => {
         const planOrder = await paymentPlan(ordered?.id, body);
         if (planOrder) {
           setPurchased(true);
-          toast.success('Payment successful');
+          toast.success('Payment Successful');
         }
       }
     } catch (err) {
+      setIsProcessing(prevState => ({
+        ...prevState,
+        [plan.id]: false
+      }));
       setOrderStatus(OrderStatus.Processing);
-      toast.error('Payment unsuccessful');
+      toast.error('Payment Failed');
       console.log(err);
     } finally {
-      setIsProcessing(false);
+      setIsProcessing(prevState => ({
+        ...prevState,
+        [plan.id]: false
+      }));
       setReloadHistory((prevState: any) => !prevState);
     }
   };
@@ -174,7 +190,7 @@ const Active = ({ setReloadHistory }: { setReloadHistory: any }) => {
                   <Button
                     variant="contained"
                     onClick={() => handlePurchase(plan)}
-                    disabled={isProcessing}
+                    disabled={isProcessing[plan.id]}
                     sx={{
                       backgroundColor: '#9BCF53',
                       '&:hover': { backgroundColor: '#BFEA7C' },
@@ -187,14 +203,14 @@ const Active = ({ setReloadHistory }: { setReloadHistory: any }) => {
                   <Button
                     variant="contained"
                     onClick={() => handlePurchase(plan)}
-                    disabled={isProcessing}
+                    disabled={isProcessing[plan.id]}
                     sx={{
                       backgroundColor: '#9BCF53',
                       '&:hover': { backgroundColor: '#BFEA7C' },
                       borderRadius: '20px'
                     }}
                   >
-                    {isProcessing ? 'Processing...' : 'Purchase Plan'}
+                    {isProcessing[plan.id] ? 'Processing...' : 'Purchase Plan'}
                   </Button>
                 )}
               </Box>
@@ -232,12 +248,6 @@ const Active = ({ setReloadHistory }: { setReloadHistory: any }) => {
                 {plan.numWordBonus !== null ? plan.numWordBonus : '0'}
               </span>
             </Typography>
-            {/* {plan.name === 'Free Trial' ? (
-                <Alert severity="info">
-                  If you are on the Free Trial version, buy the Standard or Pro version for a
-                  better experience
-                </Alert>
-              ) : null} */}
           </Box>
         </Box>
       ))}
@@ -246,4 +256,3 @@ const Active = ({ setReloadHistory }: { setReloadHistory: any }) => {
 };
 
 export { Active };
-

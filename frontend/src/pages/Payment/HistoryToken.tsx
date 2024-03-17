@@ -1,12 +1,12 @@
-import { Box, Chip, CircularProgress } from '@mui/material';
+import { Box, Chip, CircularProgress, IconButton } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import CopyButton from 'components/atoms/buttons/CoppyButton';
+import CancelIcon from '@mui/icons-material/Cancel';
 import React, { useEffect, useState } from 'react';
 
 const HistoryToken = ({ reload }: { reload: boolean }) => {
     const [orders, setOrders] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
-
 
     useEffect(() => {
         const tokenGG = localStorage.getItem('token_gg');
@@ -39,7 +39,6 @@ const HistoryToken = ({ reload }: { reload: boolean }) => {
         }
     }, [reload]);
 
-
     const getStatusChip = (status: string) => {
         let color = '';
         switch (status) {
@@ -58,6 +57,36 @@ const HistoryToken = ({ reload }: { reload: boolean }) => {
         return <Chip label={status} style={{ backgroundColor: color, color: 'white', width: "100px" }} />;
     };
 
+    const handleCancelTokenOrder = (orderId: string) => {
+        const tokenGG = localStorage.getItem('token_gg');
+
+        if (tokenGG) {
+            const apiUrl = `${import.meta.env.VITE_DEVSERVER_URL}/v1/api/user/my-token-order/${orderId}`;
+            const requestBody = {
+                status: 'cancel'
+            };
+
+            fetch(apiUrl, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${tokenGG}`
+                },
+                body: JSON.stringify(requestBody)
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to cancel token order');
+                    }
+                    console.log(`Token order with id ${orderId} has been successfully canceled.`);
+                    window.location.reload();
+                })
+                .catch(error => {
+                    console.error('Error cancelling token order:', error);
+                });
+        }
+    };
+
     const columns: GridColDef[] = [
         { field: 'paid_at', headerName: 'Date', width: 200 },
         { field: 'status', headerName: 'Status', width: 200, renderCell: (params) => getStatusChip(params.value) },
@@ -67,6 +96,21 @@ const HistoryToken = ({ reload }: { reload: boolean }) => {
             field: 'transaction_hash', headerName: 'Transaction Hash', width: 200, renderCell: (params) => (
                 <CopyButton value={params.value} />
             )
+        },
+        {
+            field: 'cancel_button',
+            headerName: 'Cancel',
+            width: 200,
+            renderCell: (params) => {
+                if (params.row.status === 'processing') {
+                    return (
+                        <IconButton color="error" onClick={() => handleCancelTokenOrder(params.row.id)}>
+                            <CancelIcon />
+                        </IconButton>
+                    );
+                }
+                return null;
+            }
         },
     ];
 
@@ -101,4 +145,3 @@ const HistoryToken = ({ reload }: { reload: boolean }) => {
 };
 
 export { HistoryToken };
-
