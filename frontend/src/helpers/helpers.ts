@@ -1,3 +1,5 @@
+import { bsc, bscTestnet, mainnet } from 'viem/chains';
+
 const getTokenGG = () => {
   const tokenGG = localStorage.getItem('token_gg');
   if (!tokenGG) {
@@ -33,5 +35,11 @@ const fetchPost = (url: string, body?: object) => {
   }
 };
 
-export { fetchGet, fetchPost, getTokenGG };
+const getLinkScan = (chainId: number) => {
+  if (chainId === mainnet.id) return 'https://etherscan.io/tx';
+  if (chainId === bsc.id) return 'https://bscscan.com/tx';
+  if (chainId === bscTestnet.id) return 'https://testnet.bscscan.com/tx';
+};
+
+export { fetchGet, fetchPost, getLinkScan, getTokenGG };
 

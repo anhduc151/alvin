@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Chip, IconButton, CircularProgress  } from '@mui/material';
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import CopyButton from 'components/atoms/buttons/CoppyButton';
+import { Link } from 'react-router-dom';
+
 import CancelIcon from '@mui/icons-material/Cancel';
+import { Box, Chip, CircularProgress, IconButton } from '@mui/material';
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
+
+import CopyButton from 'components/atoms/buttons/CoppyButton';
+import { getLinkScan } from 'helpers/helpers';
+import { bscTestnet } from 'viem/chains';
 
 const History = ({ reload }: { reload: boolean }) => {
   const [orders, setOrders] = useState<any[]>([]);
@@ -37,7 +42,7 @@ const History = ({ reload }: { reload: boolean }) => {
         })
         .catch((error) => {
           console.error('Error fetching orders:', error);
-          setLoading(false); 
+          setLoading(false);
         });
     }
   }, [reload]);
@@ -57,7 +62,12 @@ const History = ({ reload }: { reload: boolean }) => {
       default:
         color = '#4c4848';
     }
-    return <Chip label={status} style={{ backgroundColor: color, color: 'white', width: "100px" }} />;
+    return (
+      <Chip
+        label={status}
+        style={{ backgroundColor: color, color: 'white', width: '100px' }}
+      />
+    );
   };
 
   const handleCancelOrder = (orderId: string) => {
@@ -77,19 +87,20 @@ const History = ({ reload }: { reload: boolean }) => {
         },
         body: JSON.stringify(requestBody)
       })
-        .then(response => {
+        .then((response) => {
           if (!response.ok) {
             throw new Error('Failed to cancel order');
           }
-          console.log(`Order with id ${orderId} has been successfully canceled.`);
+          console.log(
+            `Order with id ${orderId} has been successfully canceled.`
+          );
           window.location.reload();
         })
-        .catch(error => {
+        .catch((error) => {
           console.error('Error cancelling order:', error);
         });
     }
   };
-
 
   const formatPriceWithCurrency = (price: number | null) => {
     if (price !== null) {
@@ -101,17 +112,44 @@ const History = ({ reload }: { reload: boolean }) => {
   const columns: GridColDef[] = [
     { field: 'paid_at', headerName: 'Date', width: 200 },
     { field: 'name', headerName: 'Plan', width: 200 },
-    { field: 'current_price', headerName: 'Unit Price', width: 200, renderCell: (params) => formatPriceWithCurrency(params.value) },
+    {
+      field: 'current_price',
+      headerName: 'Unit Price',
+      width: 200,
+      renderCell: (params) => formatPriceWithCurrency(params.value)
+    },
     { field: 'volume', headerName: 'Volume', width: 200 },
-    { field: 'price_discount_percent', headerName: 'Price Discount (%)', width: 200 },
-    { field: 'price', headerName: 'Amount', width: 200, renderCell: (params) => formatPriceWithCurrency(params.value) },
-    { field: 'status', headerName: 'Status', width: 200, renderCell: (params) => getStatusChip(params.value) },
+    {
+      field: 'price_discount_percent',
+      headerName: 'Price Discount (%)',
+      width: 200
+    },
+    {
+      field: 'price',
+      headerName: 'Amount',
+      width: 200,
+      renderCell: (params) => formatPriceWithCurrency(params.value)
+    },
+    {
+      field: 'status',
+      headerName: 'Status',
+      width: 200,
+      renderCell: (params) => getStatusChip(params.value)
+    },
     {
       field: 'transaction_hash',
       headerName: 'Transaction Hash',
       width: 200,
       renderCell: (params) => (
-        <CopyButton value={params.value} />
+        <>
+          <CopyButton value={params.value} showText={false}/>
+          <Link
+            to={`${getLinkScan(bscTestnet.id)}/${params.value}`} //TODO: change id
+            target="_blank"
+          >
+            {params.value}
+          </Link>
+        </>
       )
     },
     {
@@ -121,20 +159,30 @@ const History = ({ reload }: { reload: boolean }) => {
       renderCell: (params) => {
         if (params.row.status === 'processing') {
           return (
-            <IconButton color="error" onClick={() => handleCancelOrder(params.row.id)}>
+            <IconButton
+              color="error"
+              onClick={() => handleCancelOrder(params.row.id)}
+            >
               <CancelIcon />
             </IconButton>
           );
         }
         return null;
       }
-    },
+    }
   ];
 
   return (
     <Box>
-      {loading ? ( 
-        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '300px' }}>
+      {loading ? (
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '300px'
+          }}
+        >
           <CircularProgress />
         </Box>
       ) : (
@@ -145,9 +193,9 @@ const History = ({ reload }: { reload: boolean }) => {
           initialState={{
             pagination: {
               paginationModel: {
-                pageSize: 5,
-              },
-            },
+                pageSize: 5
+              }
+            }
           }}
           pageSizeOptions={[5]}
           sx={{
@@ -164,3 +212,4 @@ const History = ({ reload }: { reload: boolean }) => {
 };
 
 export { History };
+
