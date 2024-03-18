@@ -178,11 +178,11 @@ const ThreadList = ({
                         <Stack direction="row" gap={1}>
                           {isSelected ? (
                             <>
-                              <EditThreadButton
+                              {/* <EditThreadButton
                                 threadId={thread.id}
                                 threadData={thread}
                                 onEdit={fetchThreads}
-                              />
+                              /> */}
 
                               <DeleteThreadButton
                                 threadId={thread.id}

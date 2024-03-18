@@ -121,8 +121,8 @@ const Usage = ({ setReloadUsage }: IUsage) => {
 
   const validateBeforePayment = () => {
     let isValid = false;
-    if (parseInt(inputValue) < 50) {
-      setErrorMessage('Minimum token amount is 50.');
+    if (parseInt(inputValue) < 10) {
+      setErrorMessage('Minimum token amount is 10.');
     } else if (parseInt(inputValue) > 5000) {
       setErrorMessage('Maximum token amount is 5000.');
     } else {
@@ -214,7 +214,7 @@ const Usage = ({ setReloadUsage }: IUsage) => {
               inputProps={{
                 inputMode: 'numeric',
                 pattern: '[0-9]*',
-                min: 50,
+                min: 10,
                 max: 5000
               }}
               sx={{ mb: 2 }}
