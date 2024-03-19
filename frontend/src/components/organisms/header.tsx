@@ -17,7 +17,6 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 
 import { RegularButton } from '@chainlit/react-components';
 
-import GithubButton from 'components/atoms/buttons/githubButton';
 import UserButton from 'components/atoms/buttons/userButton';
 import { Logo } from 'components/atoms/logo';
 import NewChatButton from 'components/molecules/newChatButton';
@@ -78,14 +77,14 @@ const Nav = ({ dataPersistence, hasReadme, matches }: NavProps) => {
     anchorEl = ref.current;
   }
 
-  const tabs = [{ to: '/', label: t('components.organisms.header.chat') }];
+  const tabs = [{ to: '/message', label: t('components.organisms.header.chat') }, { to: '/payment', label: t('Payment')}];
 
-  if (hasReadme) {
-    tabs.push({
-      to: '/readme',
-      label: t('components.organisms.header.readme')
-    });
-  }
+  // if (hasReadme) {
+  //   tabs.push({
+  //     to: '/readme',
+  //     label: t('components.organisms.header.readme')
+  //   });
+  // }
 
   const nav = (
     <Stack direction={matches ? 'column' : 'row'} spacing={1}>
@@ -161,7 +160,7 @@ const Header = memo(
           }}
         >
           <Stack alignItems="center" direction={'row'} gap={!matches ? 3 : 0}>
-            {!matches ? <Logo style={{ maxHeight: '25px' }} /> : null}
+            {!matches ? <Logo style={{ maxHeight: '35px', borderRadius: "50%", border: "2px solid #292929" }} /> : null}
             <Nav
               matches={matches}
               dataPersistence={projectSettings?.dataPersistence}
@@ -177,7 +176,6 @@ const Header = memo(
           >
             <NewChatButton />
             <Box ml={1} />
-            <GithubButton href={projectSettings?.ui?.github} />
             <UserButton />
           </Stack>
         </Toolbar>

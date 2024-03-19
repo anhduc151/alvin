@@ -7,8 +7,8 @@
 Open a terminal and run:
 
 ```bash
-$ cd /frontend
 $ pnpm i
+$ cd /frontend
 $ pnpm run dev
 ```
 

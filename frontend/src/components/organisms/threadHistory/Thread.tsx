@@ -71,33 +71,66 @@ const Thread = ({ thread, error, isLoading }: Props) => {
     },
     []
   );
+  
+  // error in jsx
+  // if (isLoading) {
+  //   return [1, 2, 3].map((index) => (
+  //     <Stack
+  //       key={`thread-skeleton-${index}`}
+  //       sx={{
+  //         px: 2,
+  //         gap: 4,
+  //         mt: 5,
+  //         flexDirection: 'row',
+  //         justifyContent: 'center'
+  //       }}
+  //     >
+  //       <Stack>
+  //         <Skeleton width={50} />
+  //         <Skeleton width={50} />
+  //       </Stack>
+  //       <Skeleton
+  //         variant="rounded"
+  //         sx={{
+  //           maxWidth: '60rem',
+  //           width: '100%',
+  //           height: 100
+  //         }}
+  //       />
+  //     </Stack>
+  //   ));
+  // }
 
   if (isLoading) {
-    return [1, 2, 3].map((index) => (
-      <Stack
-        key={`thread-skeleton-${index}`}
-        sx={{
-          px: 2,
-          gap: 4,
-          mt: 5,
-          flexDirection: 'row',
-          justifyContent: 'center'
-        }}
-      >
-        <Stack>
-          <Skeleton width={50} />
-          <Skeleton width={50} />
-        </Stack>
-        <Skeleton
-          variant="rounded"
-          sx={{
-            maxWidth: '60rem',
-            width: '100%',
-            height: 100
-          }}
-        />
+    return (
+      <Stack direction="row" flexGrow={1} width="100%" height="100%">
+        {[1, 2, 3].map((index) => (
+          <Stack
+            key={`thread-skeleton-${index}`}
+            sx={{
+              px: 2,
+              gap: 4,
+              mt: 5,
+              flexDirection: 'row',
+              justifyContent: 'center'
+            }}
+          >
+            <Stack>
+              <Skeleton width={50} />
+              <Skeleton width={50} />
+            </Stack>
+            <Skeleton
+              variant="rounded"
+              sx={{
+                maxWidth: '60rem',
+                width: '100%',
+                height: 100
+              }}
+            />
+          </Stack>
+        ))}
       </Stack>
-    ));
+    );
   }
 
   if (!thread || error) {
@@ -124,12 +157,12 @@ const Thread = ({ thread, error, isLoading }: Props) => {
             id="thread-info"
             severity="info"
             action={
-              <Button component={Link} color="inherit" size="small" to="/">
+              <Button component={Link} color="inherit" size="small" to="/message">
                 <Translator path="components.organisms.threadHistory.Thread.backToChat" />
               </Button>
             }
           >
-            <Translator path="components.organisms.threadHistory.Thread.chatCreatedOn" />{' '}
+            <Translator path="components.organisms.threadHistory.Thread.chatCreatedOn" />
             {new Intl.DateTimeFormat(undefined, {
               day: 'numeric',
               month: 'numeric',

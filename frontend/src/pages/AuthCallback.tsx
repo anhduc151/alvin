@@ -16,7 +16,7 @@ export default function AuthCallback() {
 
   useEffect(() => {
     if (user) {
-      navigate('/');
+      navigate('/message');
     }
   }, [user]);
 

@@ -130,7 +130,7 @@ const _ThreadHistorySideBar = () => {
   }, []);
 
   return (
-    <Box display="flex" position="relative">
+    <Box sx={{display: "flex", position: "relative"}}>
       <Drawer
         className="chat-history-drawer"
         anchor="left"

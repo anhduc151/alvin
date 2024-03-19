@@ -35,7 +35,8 @@ const Page = ({ children }: Props) => {
       sx={{
         display: 'flex',
         flexDirection: 'column',
-        width: '100%'
+        width: '100%',
+        height: '100%'
       }}
     >
       <Header projectSettings={projectSettings} />
@@ -49,6 +50,11 @@ const Page = ({ children }: Props) => {
           {children}
         </Stack>
       )}
+
+      {/* <Stack direction="row" height="100%" width="100%" overflow="auto">
+        <ThreadHistorySideBar />
+        {children}
+      </Stack> */}
     </Box>
   );
 };

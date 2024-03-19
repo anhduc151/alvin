@@ -1,9 +1,13 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useAuth } from 'api/auth';
+import { configWagmi } from 'configs/wagmi';
 import { useEffect } from 'react';
 import { RouterProvider } from 'react-router-dom';
+import { ToastContainer, Zoom } from 'react-toastify';
 import { useRecoilValue } from 'recoil';
 import { router } from 'router';
 import { Toaster } from 'sonner';
+import { WagmiProvider } from 'wagmi';
 
 import { Box, GlobalStyles } from '@mui/material';
 import { Theme, ThemeProvider } from '@mui/material/styles';
@@ -21,6 +25,7 @@ import { projectSettingsState } from 'state/project';
 import { settingsState } from 'state/settings';
 import { userEnvState } from 'state/user';
 
+import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
 
 type Primary = {
@@ -71,11 +76,13 @@ function App() {
   const pSettings = useRecoilValue(projectSettingsState);
   // @ts-expect-error custom property
   const fontFamily = window.theme?.font_family;
-  const theme = overrideTheme(makeTheme(themeVariant, fontFamily));
+  // const theme = overrideTheme(makeTheme(themeVariant, fontFamily));
+  const theme = overrideTheme(makeTheme('dark', fontFamily));
   const { isAuthenticated, accessToken } = useAuth();
   const userEnv = useRecoilValue(userEnvState);
   const { connect, chatProfile, setChatProfile } = useChatSession();
   const apiClient = useRecoilValue(apiClientState);
+  const queryClient = new QueryClient();
 
   const pSettingsLoaded = !!pSettings;
 
@@ -123,18 +130,23 @@ function App() {
           }
         }}
       />
-      <Box
-        display="flex"
-        height="100vh"
-        width="100vw"
-        sx={{ overflowX: 'hidden' }}
-      >
-        <PromptPlayground />
-        <ChatSettingsModal />
-        <Hotkeys />
-        <SettingsModal />
-        <RouterProvider router={router} />
-      </Box>
+      <WagmiProvider config={configWagmi}>
+        <QueryClientProvider client={queryClient}>
+          <Box
+            display="flex"
+            height="100vh"
+            width="100vw"
+            sx={{ overflowX: 'hidden' }}
+          >
+            <PromptPlayground />
+            <ChatSettingsModal />
+            <Hotkeys />
+            <SettingsModal />
+            <RouterProvider router={router} />
+            <ToastContainer position="bottom-right" theme="colored" transition={Zoom}/>
+          </Box>
+        </QueryClientProvider>
+      </WagmiProvider>
     </ThemeProvider>
   );
 }

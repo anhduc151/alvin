@@ -1,15 +1,10 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
 import { Box } from '@mui/material';
-
 import { useChatInteract } from '@chainlit/react-client';
 import { AccentButton } from '@chainlit/react-components';
-
 import { Translator } from 'components/i18n';
-
 import SquarePenIcon from 'assets/squarePen';
-
 import NewChatDialog from './newChatDialog';
 
 export default function NewChatButton() {
@@ -27,7 +22,7 @@ export default function NewChatButton() {
 
   const handleConfirm = () => {
     clear();
-    navigate('/');
+    navigate('/message');
     handleClose();
   };
 
@@ -38,9 +33,11 @@ export default function NewChatButton() {
         variant="outlined"
         onClick={handleClickOpen}
         startIcon={<SquarePenIcon />}
+        sx={{ border: "2px solid #3FD18A", color: "#3FD18A"}}
       >
         <Translator path="components.molecules.newChatButton.newChat" />
       </AccentButton>
+      
       <NewChatDialog
         open={open}
         handleClose={handleClose}

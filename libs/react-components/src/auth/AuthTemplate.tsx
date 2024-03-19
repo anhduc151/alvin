@@ -6,18 +6,20 @@ interface AuthTemplateProps {
   children: React.ReactNode;
   renderLogo?: React.ReactElement;
   title?: string;
+  renderElementBottom?: React.ReactNode;
 }
 
 const AuthTemplate = ({
   title,
   children,
-  renderLogo
+  renderLogo,
+  renderElementBottom
 }: AuthTemplateProps): JSX.Element => {
   return (
     <Stack
       sx={{
         backgroundColor: (theme) => theme.palette.background.default,
-        height: '100vh',
+        height: '60vh',
         width: '100vw',
         alignItems: 'center',
         justifyContent: 'center'
@@ -55,9 +57,12 @@ const AuthTemplate = ({
             </Typography>
           ) : null}
         </Stack>
+
+        
         <Stack gap={1} paddingX={3}>
           {children}
         </Stack>
+          {renderElementBottom}
       </Box>
     </Stack>
   );

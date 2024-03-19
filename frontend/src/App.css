@@ -1,3 +1,33 @@
+@import url('https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Raleway:ital,wght@0,100..900;1,100..900&family=Truculenta:opsz,wght@12..72,100..900&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Roboto';
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  /* background-image: linear-gradient(0deg,#11bbad,#19a320); */
+  background-color: #202020;
+  /* background-color: transparent; */
+  border-radius: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.decoration {
+  text-decoration: none;
+}
+
 .markdown-body {
   overflow-x: auto;
 }
@@ -16,4 +46,13 @@
 
 .markdown-body p {
   white-space: break-spaces;
+}
+
+.home_title_names,
+#preview h6,
+#ship h6,
+#develop h6,
+.home_preview_p,
+.home_develop_right_box_h4 {
+  color: #fff;
 }

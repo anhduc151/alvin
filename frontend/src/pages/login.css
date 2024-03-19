@@ -1,0 +1,73 @@
+/* css login */
+.login_box {
+  width: 100vw;
+  background-image: url('../assets/crypto.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100vh;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.login_name {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  position: absolute;
+  top: 2%;
+  left: 2%;
+}
+
+.login_h1 {
+  background-image: linear-gradient(to top, #fdd819, #e86005);
+  font-size: 100px;
+  color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+  filter: drop-shadow(6px 6px 7px rgba(105, 104, 105, 0.7));
+}
+
+.sign_in_google {
+  display: flex;
+  background-color: #fff;
+  justify-content: center;
+  align-items: center;
+  border-radius: 9px;
+  border: 2px solid #ffffff;
+  z-index: 1000;
+}
+
+.sign_in_google:hover {
+  cursor: pointer;
+  border: 2px solid #00ff00;
+}
+
+.sign_in_google_imgs {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+}
+
+.sign_in_or {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.or::after {
+  content: ' ➖➖➖';
+  width: 100px;
+}
+
+.or::before {
+  content: '➖➖➖ ';
+  width: 100px;
+}
+
+@media screen and (max-width: 768px) {
+  .login_h1 {
+    font-size: 60px;
+  }
+}

@@ -1,9 +1,7 @@
 import size from 'lodash/size';
 import { useState } from 'react';
 import { useRecoilValue } from 'recoil';
-
 import { Box, Popover, Tab, Tabs } from '@mui/material';
-
 import {
   useChatInteract,
   useChatMessages,
@@ -15,9 +13,7 @@ import {
   grey,
   useIsDarkMode
 } from '@chainlit/react-components';
-
 import { projectSettingsState } from 'state/project';
-
 import NewChatDialog from './newChatDialog';
 
 export default function ChatProfiles() {
