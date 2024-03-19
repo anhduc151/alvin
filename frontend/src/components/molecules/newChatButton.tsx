@@ -1,9 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { useChatInteract } from '@chainlit/react-client';
 import { AccentButton } from '@chainlit/react-components';
-import { Translator } from 'components/i18n';
 import SquarePenIcon from 'assets/squarePen';
 import NewChatDialog from './newChatDialog';
 
@@ -27,22 +26,24 @@ export default function NewChatButton() {
   };
 
   return (
-    <Box>
-      <AccentButton
-        id="new-chat-button"
-        variant="outlined"
-        onClick={handleClickOpen}
-        startIcon={<SquarePenIcon />}
-        sx={{ border: "2px solid #3FD18A", color: "#3FD18A"}}
-      >
-        <Translator path="components.molecules.newChatButton.newChat" />
-      </AccentButton>
-      
-      <NewChatDialog
-        open={open}
-        handleClose={handleClose}
-        handleConfirm={handleConfirm}
-      />
-    </Box>
+    <>
+      <Box>
+        <AccentButton
+          id="new-chat-button"
+          variant="outlined"
+          onClick={handleClickOpen}
+          startIcon={<SquarePenIcon />}
+          sx={{ border: "2px solid #3FD18A", color: "#3FD18A" }}
+        >
+          New Chat
+        </AccentButton>
+
+        <NewChatDialog
+          open={open}
+          handleClose={handleClose}
+          handleConfirm={handleConfirm}
+        />
+      </Box>
+    </>
   );
 }

@@ -60,7 +60,7 @@ export default function ResumeButton({ threadId }: Props) {
   const { clear, setIdToResume } = useChatInteract();
 
   if (!threadId || !pSettings?.threadResumable) {
-    return null; 
+    return null;
   }
 
   const onClick = () => {
@@ -85,7 +85,7 @@ export default function ResumeButton({ threadId }: Props) {
       }}
     >
       <Button id="resumeThread" onClick={onClick} variant="contained">
-        <Translator path="pages.ResumeButton.resumeChat" />
+        Resume Chat
       </Button>
       <WaterMark />
     </Box>

@@ -175,7 +175,7 @@ const _ThreadHistorySideBar = () => {
               color: (theme) => theme.palette.text.primary
             }}
           >
-            <Translator path="components.organisms.threadHistory.sidebar.index.pastChats" />
+            Past Chats
           </Typography>
         </Stack>
         <Filters />

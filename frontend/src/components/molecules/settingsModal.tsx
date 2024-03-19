@@ -49,7 +49,7 @@ export default function SettingsModal() {
             <ListItemText
               id="list-expand-all"
               primary={
-                <Translator path="components.molecules.settingsModal.expandMessages" />
+                <p>Expand Messages</p>
               }
             />
             <Box>
@@ -73,7 +73,7 @@ export default function SettingsModal() {
               <ListItemText
                 id="hide-cot"
                 primary={
-                  <Translator path="components.molecules.settingsModal.hideChainOfThought" />
+                  <p>Hide Chain Of Thought</p>
                 }
               />
               <Box>
@@ -97,7 +97,7 @@ export default function SettingsModal() {
             <ListItemText
               id="switch-theme"
               primary={
-                <Translator path="components.molecules.settingsModal.darkMode" />
+                <p>darkMode</p>
               }
             />
             <Box>

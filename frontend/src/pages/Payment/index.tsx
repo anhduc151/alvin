@@ -101,7 +101,7 @@ const Payment: React.FC = () => {
                   Usage Limit
                 </Typography>
 
-                <Usage value={0} setReloadUsage={setReloadUsage}/>
+                <Usage setReloadUsage={setReloadUsage}/>
 
                 <Box sx={{ width: "100%" }}>
                   <Typography sx={{ fontWeight: "700", paddingBottom: "12px", paddingTop: "20px" }}>

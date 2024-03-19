@@ -1,7 +1,7 @@
 import { useRecoilValue } from 'recoil';
 
 import AttachFile from '@mui/icons-material/AttachFile';
-import { IconButton, Theme, Tooltip, useMediaQuery } from '@mui/material';
+import { IconButton, Theme, Tooltip, Typography, useMediaQuery } from '@mui/material';
 
 import { FileSpec } from '@chainlit/react-client';
 import { useUpload } from '@chainlit/react-components';
@@ -42,7 +42,7 @@ const UploadButton = ({
   return (
     <Tooltip
       title={
-        <Translator path="components.organisms.chat.inputBox.UploadButton.attachFiles" />
+        <Typography>Attach Files</Typography>
       }
     >
       <span>

@@ -31,7 +31,7 @@ const Header = ({ status }: { status: string }) => {
           fontFamily: theme.typography.fontFamily
         }}
       >
-        <Translator path="components.molecules.tasklist.TaskList.title" />
+        Title
       </Box>
       <Chip
         label={status || '?'}
@@ -87,13 +87,13 @@ const TaskList = ({ isMobile }: { isMobile: boolean }) => {
   if (isLoading && !data) {
     return (
       <div>
-        <Translator path="components.molecules.tasklist.TaskList.loading" />
+        Loading
       </div>
     );
   } else if (error) {
     return (
       <div>
-        <Translator path="components.molecules.tasklist.TaskList.error" />
+        Error
       </div>
     );
   }

@@ -96,10 +96,10 @@ export default function Env() {
           fontWeight={700}
           color="text.primary"
         >
-          <Translator path="pages.Env.requiredApiKeys" />
+          requiredApiKeys
         </Typography>
         <Alert severity="info">
-          <Translator path="pages.Env.requiredApiKeysInfo" />
+          requiredApiKeysInfo
         </Alert>
         <form onSubmit={formik.handleSubmit}>
           {requiredKeys.map((key) => renderInput(key))}

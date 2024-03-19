@@ -71,7 +71,7 @@ const Thread = ({ thread, error, isLoading }: Props) => {
     },
     []
   );
-  
+
   // error in jsx
   // if (isLoading) {
   //   return [1, 2, 3].map((index) => (
@@ -158,11 +158,11 @@ const Thread = ({ thread, error, isLoading }: Props) => {
             severity="info"
             action={
               <Button component={Link} color="inherit" size="small" to="/message">
-                <Translator path="components.organisms.threadHistory.Thread.backToChat" />
+                Back To Chat
               </Button>
             }
           >
-            <Translator path="components.organisms.threadHistory.Thread.chatCreatedOn" />
+            Chat Created On
             {new Intl.DateTimeFormat(undefined, {
               day: 'numeric',
               month: 'numeric',

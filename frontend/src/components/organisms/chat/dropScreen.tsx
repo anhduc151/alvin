@@ -15,7 +15,7 @@ export default function DropScreen() {
       <Stack alignItems="center" gap={2}>
         <FileIcon sx={{ width: '100px', height: '100px' }} />
         <Typography color="text.secondary" fontWeight={700} fontSize="1.5rem">
-          <Translator path="components.organisms.chat.dropScreen.dropYourFilesHere" />
+          Drop Your Files Here
         </Typography>
       </Stack>
     </Backdrop>

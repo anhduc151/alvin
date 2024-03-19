@@ -1,6 +1,6 @@
 import StopCircle from '@mui/icons-material/StopCircle';
 import Telegram from '@mui/icons-material/Telegram';
-import { Tooltip } from '@mui/material';
+import { Tooltip, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 
@@ -31,7 +31,7 @@ const SubmitButton = ({ disabled, onSubmit }: SubmitButtonProps) => {
       {!loading ? (
         <Tooltip
           title={
-            <Translator path="components.organisms.chat.inputBox.SubmitButton.sendMessage" />
+            <Typography>Send Message</Typography>
           }
         >
           <IconButton disabled={disabled} color="inherit" onClick={onSubmit}>
@@ -41,7 +41,7 @@ const SubmitButton = ({ disabled, onSubmit }: SubmitButtonProps) => {
       ) : (
         <Tooltip
           title={
-            <Translator path="components.organisms.chat.inputBox.SubmitButton.stopTask" />
+            <Typography>Stop Task</Typography>
           }
         >
           <IconButton id="stop-button" onClick={handleClick}>

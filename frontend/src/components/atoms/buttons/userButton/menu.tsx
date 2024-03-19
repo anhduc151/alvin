@@ -86,10 +86,10 @@ export default function UserMenu({ anchorEl, open, handleClose }: Props) {
         <SettingsIcon fontSize="small" />
       </ListItemIcon>
       <ListItemText>
-        <Translator path="components.atoms.buttons.userButton.menu.settings" />
+        Settings
       </ListItemText>
       <Typography variant="body2" color="text.secondary">
-        <Translator path="components.atoms.buttons.userButton.menu.settingsKey" />
+        SettingsKey
       </Typography>
     </MenuItem>
   );
@@ -99,7 +99,7 @@ export default function UserMenu({ anchorEl, open, handleClose }: Props) {
       <ListItemIcon>
         <KeyIcon fontSize="small" />
       </ListItemIcon>
-      <Translator path="components.atoms.buttons.userButton.menu.APIKeys" />
+       APIKeys
     </MenuItem>
   );
 
@@ -114,7 +114,7 @@ export default function UserMenu({ anchorEl, open, handleClose }: Props) {
       <ListItemIcon>
         <LogoutIcon fontSize="small" />
       </ListItemIcon>
-      <Translator path="components.atoms.buttons.userButton.menu.logout" />
+      Logout
     </MenuItem>
   );
 

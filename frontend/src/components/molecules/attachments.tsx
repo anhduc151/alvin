@@ -34,7 +34,7 @@ const Attachments = (): JSX.Element => {
         const progress = showProgress ? (
           <Tooltip
             title={
-              <Translator path="components.molecules.attachments.cancelUpload" />
+              <p>Cancel Upload</p>
             }
           >
             <Box
@@ -76,7 +76,7 @@ const Attachments = (): JSX.Element => {
           !showProgress && attachment.remove ? (
             <Tooltip
               title={
-                <Translator path="components.molecules.attachments.removeAttachment" />
+                <p>Remove Attachment</p>
               }
             >
               <IconButton

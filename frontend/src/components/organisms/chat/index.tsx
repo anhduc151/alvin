@@ -4,7 +4,7 @@ import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { toast } from 'sonner';
 import { v4 as uuidv4 } from 'uuid';
 
-import { Alert, Box } from '@mui/material';
+import { Alert, Box, Typography } from '@mui/material';
 
 import {
   threadHistoryState,
@@ -92,8 +92,7 @@ const Chat = () => {
           })
           .catch((error) => {
             toast.error(
-              `${t('components.organisms.chat.index.failedToUpload')} ${
-                file.name
+              `${t('components.organisms.chat.index.failedToUpload')} ${file.name
               }: ${error.message}`
             );
             setAttachments((prev) =>
@@ -109,8 +108,7 @@ const Chat = () => {
           uploadProgress: 0,
           cancel: () => {
             toast.info(
-              `${t('components.organisms.chat.index.cancelledUploadOf')} ${
-                file.name
+              `${t('components.organisms.chat.index.cancelledUploadOf')} ${file.name
               }`
             );
             xhr.abort();
@@ -183,7 +181,7 @@ const Chat = () => {
             }}
           >
             <Alert sx={{ mx: 2 }} id="session-error" severity="error">
-              <Translator path="components.organisms.chat.index.couldNotReachServer" />
+              <Typography>couldNotReachServer</Typography>
             </Alert>
           </Box>
         ) : null}
@@ -197,7 +195,7 @@ const Chat = () => {
             }}
           >
             <Alert sx={{ mx: 2 }} severity="info">
-              <Translator path="components.organisms.chat.index.continuingChat" />
+              <Typography>Continuing Chat</Typography>
             </Alert>
           </Box>
         ) : null}

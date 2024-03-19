@@ -4,7 +4,7 @@ import { toast } from 'sonner';
 
 import DeleteOutline from '@mui/icons-material/DeleteOutline';
 import LoadingButton from '@mui/lab/LoadingButton';
-import { IconButton } from '@mui/material';
+import { IconButton, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -39,12 +39,12 @@ const DeleteThreadButton = ({ threadId, onDelete }: Props) => {
   const handleConfirm = async () => {
     toast.promise(apiClient.deleteThread(threadId, accessToken), {
       loading: (
-        <Translator path="components.organisms.threadHistory.sidebar.DeleteThreadButton.deletingChat" />
+        <Typography>Deleting Chat</Typography>
       ),
       success: () => {
         onDelete();
         return (
-          <Translator path="components.organisms.threadHistory.sidebar.DeleteThreadButton.chatDeleted" />
+          <Typography>Chat Deleted</Typography>
         );
       },
       error: (err) => {
@@ -78,12 +78,12 @@ const DeleteThreadButton = ({ threadId, onDelete }: Props) => {
           <DialogTitle id="alert-dialog-title">{'Delete Thread?'}</DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
-              <Translator path="components.organisms.threadHistory.sidebar.DeleteThreadButton.confirmMessage" />
+            Confirm Message
             </DialogContentText>
           </DialogContent>
           <DialogActions sx={{ color: 'text.secondary', p: 2 }}>
             <Button variant="outlined" color="inherit" onClick={handleClose}>
-              <Translator path="components.organisms.threadHistory.sidebar.DeleteThreadButton.cancel" />
+              Cancel
             </Button>
             <LoadingButton
               variant="outlined"
@@ -91,7 +91,7 @@ const DeleteThreadButton = ({ threadId, onDelete }: Props) => {
               onClick={handleConfirm}
               autoFocus
             >
-              <Translator path="components.organisms.threadHistory.sidebar.DeleteThreadButton.confirm" />
+              Confirm
             </LoadingButton>
           </DialogActions>
         </Dialog>

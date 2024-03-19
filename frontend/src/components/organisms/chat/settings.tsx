@@ -62,7 +62,7 @@ export default function ChatSettingsModal() {
       }}
     >
       <DialogTitle id="alert-dialog-title">
-        {<Translator path="components.organisms.chat.settings.settingsPanel" />}
+        Settings Panel
       </DialogTitle>
       <DialogContent>
         <Box
@@ -89,11 +89,11 @@ export default function ChatSettingsModal() {
       </DialogContent>
       <DialogActions sx={{ p: 2 }}>
         <AccentButton onClick={handleReset} color="primary" variant="outlined">
-          <Translator path="components.organisms.chat.settings.reset" />
+          Reset
         </AccentButton>
         <div style={{ flex: '1 0 0' }} />
         <RegularButton onClick={handleClose}>
-          <Translator path="components.organisms.chat.settings.cancel" />
+          Cancel
         </RegularButton>
         <AccentButton
           id="confirm"
@@ -101,7 +101,7 @@ export default function ChatSettingsModal() {
           onClick={handleConfirm}
           autoFocus
         >
-          <Translator path="components.organisms.chat.settings.confirm" />
+          Confirm
         </AccentButton>
       </DialogActions>
     </Dialog>

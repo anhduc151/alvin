@@ -94,7 +94,7 @@ export default function InputHistoryButton({ disabled, onClick }: Props) {
         color="text.primary"
         sx={{ fontSize: '14px', fontWeight: 700 }}
       >
-        <Translator path="components.organisms.chat.history.index.lastInputs" />
+        Last Inputs
       </Typography>
       <IconButton
         onClick={() => setInputHistory((old) => ({ ...old, inputs: [] }))}
@@ -117,7 +117,7 @@ export default function InputHistoryButton({ disabled, onClick }: Props) {
             textTransform: 'uppercase'
           }}
         >
-          <Translator path="components.organisms.chat.history.index.noInputs" />
+          No Inputs
         </Typography>
       </div>
     ) : null;
@@ -134,7 +134,7 @@ export default function InputHistoryButton({ disabled, onClick }: Props) {
           textTransform: 'uppercase'
         }}
       >
-        <Translator path="components.organisms.chat.history.index.loading" />
+        Loading
       </Typography>
     </div>
   ) : null;

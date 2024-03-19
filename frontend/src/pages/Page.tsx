@@ -42,7 +42,7 @@ const Page = ({ children }: Props) => {
       <Header projectSettings={projectSettings} />
       {!isAuthenticated ? (
         <Alert severity="error">
-          <Translator path="pages.Page.notPartOfProject" />
+          notPartOfProject
         </Alert>
       ) : (
         <Stack direction="row" height="100%" width="100%" overflow="auto">
